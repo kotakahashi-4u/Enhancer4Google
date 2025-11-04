@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "Enhancer 4 NotebookLM",
+    "description": "拡張機能の名前"
+  },
+  "extensionDescription": {
+    "message": "NotebookLMのUIを改善し、各種機能群を折りたたみ表示にします。",
+    "description": "拡張機能の説明"
+  },
+  "featuresLabel": {
+    "message": "各種機能群",
+    "description": "折りたたみ部分のラベル"
+  }
+}

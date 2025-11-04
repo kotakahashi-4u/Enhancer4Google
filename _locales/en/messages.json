@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "Enhancer 4 NotebookLM",
+    "description": "The name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Improves the NotebookLM UI by making the feature set collapsible.",
+    "description": "The description of the extension."
+  },
+  "featuresLabel": {
+    "message": "Features",
+    "description": "The label for the collapsible section."
+  }
+}
