@@ -1,14 +1,90 @@
 {
   "extensionName": {
-    "message": "Enhancer 4 NotebookLM",
+    "message": "Enhancer 4 Google",
     "description": "The name of the extension."
   },
   "extensionDescription": {
-    "message": "Improves the NotebookLM UI by making the feature set collapsible.",
+    "message": "Improves the UI of various Google services, taking these already user-friendly services to the next level.",
     "description": "The description of the extension."
   },
   "featuresLabel": {
     "message": "Features",
     "description": "The label for the collapsible section."
+  },
+  "optionsTitle": {
+    "message": "Enhancer 4 Google Settings",
+    "description": "Title for the options page."
+  },
+  "categoryNotebookLM": {
+    "message": "NotebookLM Features",
+    "description": "Category name for NotebookLM."
+  },
+  "featureCollapsibleStudio": {
+    "message": "Collapsible Studio Panel",
+    "description": "Feature name for collapsible studio."
+  },
+  "featureCollapsibleStudioDesc": {
+    "message": "Adds a collapsible section to the 'Studio' panel to hide the feature buttons.",
+    "description": "Description for collapsible studio."
+  },
+  "featureButtonEnhancer": {
+    "message": "Studio Button Enhancer",
+    "description": "Feature name for button enhancer."
+  },
+  "featureButtonEnhancerDesc": {
+    "message": "Changes the default click action of 'Audio' or 'Video' buttons to open the edit prompt instead of auto-generating.",
+    "description": "Description for button enhancer."
+  },
+  "featureNblmEnterKey": {
+    "message": "Reverse Enter/Submit",
+    "description": "Feature name for NotebookLM Enter key."
+  },
+  "featureNblmEnterKeyDesc": {
+    "message": "Changes 'Enter' to create a new line and 'Shift + Enter' to submit the prompt.",
+    "description": "Description for NotebookLM Enter key."
+  },
+  "settingsSaved": {
+    "message": "Settings saved!",
+    "description": "Confirmation message when settings are saved."
+  },
+  "categoryGemini": {
+    "message": "Gemini Features",
+    "description": "Category name for Gemini."
+  },
+  "featureGeminiShortcuts": {
+    "message": "Tool Shortcuts",
+    "description": "Feature name for Gemini tool shortcuts."
+  },
+  "featureGeminiShortcutsDesc": {
+    "message": "Show Deep Research and Canvas buttons directly in the prompt bar.",
+    "description": "Description for Gemini tool shortcuts."
+  },
+  "featureGeminiEnterKey": {
+    "message": "Reverse Enter/Submit",
+    "description": "Feature name for Gemini Enter key."
+  },
+  "featureGeminiEnterKeyDesc": {
+    "message": "Changes 'Enter' to create a new line and 'Shift + Enter' to submit the prompt.",
+    "description": "Description for Gemini Enter key."
+  },
+  "featureGeminiLayoutWidth": {
+    "message": "Custom Content Width",
+    "description": "Feature name for Gemini content width."
+  },
+  "featureGeminiLayoutWidthDesc": {
+    "message": "Set a custom max-width for the chat history and prompt area (760-5000px).",
+    "description": "Description for Gemini content width."
+  },
+  "categoryGoogleChat": {
+    "message": "Google Chat Features",
+    "description": "Category name for Google Chat."
+  },
+  "featureChatEnterKey": {
+    "message": "Reverse Enter/Submit",
+    "description": "Feature name for Google Chat Enter key."
+  },
+  "featureChatEnterKeyDesc": {
+    "message": "Changes 'Enter' to create a new line and 'Shift + Enter' to send the message.",
+    "description": "Description for Google Chat Enter key."
   }
 }
