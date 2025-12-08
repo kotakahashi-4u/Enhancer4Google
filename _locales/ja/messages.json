@@ -1,14 +1,90 @@
 {
   "extensionName": {
-    "message": "Enhancer 4 NotebookLM",
+    "message": "Enhancer 4 Google",
     "description": "拡張機能の名前"
   },
   "extensionDescription": {
-    "message": "NotebookLMのUIを改善し、各種機能群を折りたたみ表示にします。",
+    "message": "各種GoogleサービスのUIを改善し、ただでさえ使いやすいGoogleサービスをさらにレベルアップさせます。",
     "description": "拡張機能の説明"
   },
   "featuresLabel": {
     "message": "各種機能群",
     "description": "折りたたみ部分のラベル"
+  },
+  "optionsTitle": {
+    "message": "Enhancer 4 Google 設定",
+    "description": "設定ページのタイトル"
+  },
+  "categoryNotebookLM": {
+    "message": "NotebookLM 機能",
+    "description": "NotebookLMのカテゴリ名"
+  },
+  "featureCollapsibleStudio": {
+    "message": "Studioパネルの開閉機能",
+    "description": "Studio開閉機能の名前"
+  },
+  "featureCollapsibleStudioDesc": {
+    "message": "「Studio」パネルに機能ボタンを折りたたむセクションを追加します。",
+    "description": "Studio開閉機能の説明"
+  },
+  "featureButtonEnhancer": {
+    "message": "Studioボタンの動作改善",
+    "description": "ボタン動作改善機能の名前"
+  },
+  "featureButtonEnhancerDesc": {
+    "message": "「音声解説」や「動画解説」ボタンのクリック動作を、自動生成ではなく編集プロンプトが開くように変更します。",
+    "description": "ボタン動作改善機能の説明"
+  },
+  "featureNblmEnterKey": {
+    "message": "Enterキーの動作変更",
+    "description": "NotebookLMのEnterキー機能の名前"
+  },
+  "featureNblmEnterKeyDesc": {
+    "message": "「Enter」で改行、「Shift + Enter」でプロンプトを送信するように動作を変更します。",
+    "description": "NotebookLMのEnterキー機能の説明"
+  },
+  "settingsSaved": {
+    "message": "設定を保存しました！",
+    "description": "設定保存時の確認メッセージ"
+  },
+  "categoryGemini": {
+    "message": "Gemini 機能",
+    "description": "Geminiのカテゴリ名"
+  },
+  "featureGeminiShortcuts": {
+    "message": "ツールショートカット",
+    "description": "Geminiのツールショートカット機能の名前"
+  },
+  "featureGeminiShortcutsDesc": {
+    "message": "プロンプトバーにDeep ResearchとCanvasのボタンを常時表示します。",
+    "description": "Geminiのツールショートカット機能の説明"
+  },
+  "featureGeminiEnterKey": {
+    "message": "Enterキーの動作変更",
+    "description": "GeminiのEnterキー機能の名前"
+  },
+  "featureGeminiEnterKeyDesc": {
+    "message": "「Enter」で改行、「Shift + Enter」でプロンプトを送信するように動作を変更します。",
+    "description": "GeminiのEnterキー機能の説明"
+  },
+  "featureGeminiLayoutWidth": {
+    "message": "コンテンツ幅のカスタマイズ",
+    "description": "Geminiのコンテンツ幅機能の名前"
+  },
+  "featureGeminiLayoutWidthDesc": {
+    "message": "Geminiのチャット履歴とプロンプトエリアの最大幅をカスタム設定します (760〜5000px)。",
+    "description": "Geminiのコンテンツ幅機能の説明"
+  },
+  "categoryGoogleChat": {
+    "message": "Googleチャット 機能",
+    "description": "Google Chatのカテゴリ名"
+  },
+  "featureChatEnterKey": {
+    "message": "Enterキーの動作変更",
+    "description": "Google ChatのEnterキー機能の名前"
+  },
+  "featureChatEnterKeyDesc": {
+    "message": "「Enter」で改行、「Shift + Enter」でメッセージを送信するように動作を変更します。",
+    "description": "Google ChatのEnterキー機能の説明"
   }
 }
