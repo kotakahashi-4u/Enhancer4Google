@@ -1,9 +1,21 @@
-# Enhancer 4 NotebookLM
-NotebookLMに対する拡張機能群。
+# Enhancer 4 Google
+Google各種サービスに対する拡張機能群。
 
 ## 現在有効な機能
-- NotebookLMのStudioパネルに各種機能群リンクを発生させ、Studioエリアに開閉機能を付与する。
+### NotebookLM
+1. NotebookLMのStudioパネルに各種機能群リンクを発生させ、Studioエリアに開閉機能を付与する。
+2. NotebookLMのStudioパネルにあるアクションボタン群の動作改善
+3. プロンプトエリアのEnterボタン動作改善（Enter: 改行、Shift+Enter: 送信）
 
+### Gemini
+1. DeepResearchやCanvasのチャットエリアへの露出
+2. コンテンツエリアの領域拡大
+3. プロンプトエリアのEnterボタン動作改善（Enter: 改行、Shift+Enter: 送信）
+
+
+### Googleチャット
+1. チャットエリアのEnterボタン動作改善（Enter: 改行、Shift+Enter: 送信）
+ 
 ## 使い方
 1. 本リポジトリを「Download Zip」機能を用いてローカルダウンロードする。
 2. Zipファイルを解凍する。
