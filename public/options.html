@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n="optionsTitle">Enhancer 4 Google Settings</title>
+  <style>
+    :root {
+      --theme-color: #1BA1E3;
+      --theme-color-light: rgba(27, 161, 227, 0.2);
+      --theme-secondary-color: #9168C0;
+      --text-dark: #2c3e50;
+      --text-light: #7f8c8d;
+      --bg-main: #f4f7f6;
+      --bg-card: #ffffff;
+      --border-color: #ecf0f1;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      width: 380px; /* 少し幅を広げて窮屈さを解消 */
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      border-bottom: 3px solid var(--theme-color); /* テーマカラーをアクセントに */
+      padding-bottom: 12px;
+      margin-top: 0;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-top: 30px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .category-box {
+      background-color: var(--bg-card);
+      border: none;
+      border-radius: 12px; /* 角を丸く */
+      padding: 0; /* 子要素でパディングを管理 */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* モダンな影 */
+      overflow: hidden; /* 子要素の角丸を強制 */
+    }
+
+    .feature-toggle {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.2s ease;
+    }
+    .feature-toggle:hover {
+      background-color: #fcfcfc;
+    }
+    .feature-toggle:last-child {
+      border-bottom: none;
+    }
+
+    .feature-info {
+      display: grid; /* Gridレイアウトでトグルとテキストを整列 */
+      grid-template-columns: 1fr auto; /* [テキスト] auto[トグル] */
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        "name   toggle"
+        "desc   toggle"; /* トグルが2行をまたぐ */
+      align-items: center;
+      gap: 4px 12px; /* 縦4px, 横12pxの隙間 */
+    }
+
+    .feature-name {
+      grid-area: name;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .feature-desc {
+      grid-area: desc;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-top: 0;
+      line-height: 1.4;
+    }
+
+    /* --- テーマカラーを適用したスイッチ --- */
+    .switch {
+      grid-area: toggle;
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #bdc1c6; /* OFFの色 */
+      transition: .3s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 2px 0 rgba(0,0,0,0.12);
+    }
+
+    input:checked + .slider {
+      background-color: var(--theme-color); /* ★テーマカラー★ */
+    }
+    input:focus + .slider {
+      box-shadow: 0 0 1px var(--theme-color);
+    }
+    input:checked + .slider:before {
+      transform: translateX(16px);
+    }
+
+    /* --- 数値入力欄のデザイン --- */
+   .feature-sub-input {
+      width: auto; /* 100%を解除 */
+      padding: 0px 20px 16px 20px; 
+      margin-top: 0;
+      display: none; /* デフォルトは非表示 (JSで制御) */
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .feature-sub-input label {
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      margin-right: 8px;
+    }
+    .feature-sub-input input[type="number"] {
+      width: 80px;
+      padding: 6px 10px;
+      border: 1px solid #dfe4e8;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+    }
+    .feature-sub-input input[type="number"]:focus {
+      outline: none;
+      border-color: var(--theme-color);
+      box-shadow: 0 0 0 2px var(--theme-color-light);
+    }
+    .feature-sub-input input[type="number"]:disabled {
+      background-color: #f1f3f4;
+      color: #bdc1c6;
+    }
+    /* トグルがONの時だけ数値入力を表示 */
+    .feature-toggle:has(input[type="checkbox"]:checked) + .feature-sub-input {
+      display: flex; 
+    }
+
+    /* Gemini幅設定トグルがONの時、そのトグル自体の下線を消す */
+    .feature-toggle:has(#geminiLayoutWidthEnabled:checked) {
+      border-bottom: none;
+    }
+    /* --- 保存メッセージ --- */
+    .status-message {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--text-dark); /* プロフェッショナルな濃い色に */
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+      pointer-events: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<h1 data-i18n="optionsTitle">Settings</h1>
+
+  <h2 data-i18n="categoryNotebookLM">NotebookLM Features</h2>
+  <div class="category-box">
+    <div class="feature-toggle">
+      <div class="feature-info">
+        <span class="feature-name" data-i18n="featureCollapsibleStudio">Collapsible Studio Panel</span>
+        <label class="switch">
+          <input type="checkbox" id="collapsibleStudio">
+          <span class="slider"></span>
+        </label>
+        <div class="feature-desc" data-i18n="featureCollapsibleStudioDesc">Adds a collapsible section...</div>
+      </div>
+    </div>
+
+    <div class="feature-toggle">
+      <div class="feature-info">
+        <span class="feature-name" data-i18n="featureButtonEnhancer">Studio Button Enhancer</span>
+        <label class="switch">
+          <input type="checkbox" id="hijackClicks">
+          <span class="slider"></span>
+        </label>
+        <div class="feature-desc" data-i18n="featureButtonEnhancerDesc">Changes the default click action...</div>
+      </div>
+    </div>
+    
+    <div class="feature-toggle">
+      <div class="feature-info">
+        <span class="feature-name" data-i18n="featureNblmEnterKey">Reverse Enter/Submit</span>
+        <label class="switch">
+          <input type="checkbox" id="notebooklmEnterKey">
+          <span class="slider"></span>
+        </label>
+        <div class="feature-desc" data-i18n="featureNblmEnterKeyDesc">Use 'Enter' for new lines...</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 data-i18n="categoryGemini">Gemini Features</h2>
+  <div class="category-box">
+    
+    <div class="feature-toggle">
+      <div class="feature-info">
+        <span class="feature-name" data-i18n="featureGeminiShortcuts">Tool Shortcuts</span>
+        <label class="switch">
+          <input type="checkbox" id="geminiToolShortcuts">
+          <span class="slider"></span>
+        </label>
+        <div class="feature-desc" data-i18n="featureGeminiShortcutsDesc">Show Deep Research and Canvas...</div>
+      </div>
+    </div>
+    
+    <div class="feature-toggle">
+      <div class="feature-info">
+        <span class="feature-name" data-i18n="featureGeminiEnterKey">Reverse Enter/Submit</span>
+        <label class="switch">
+          <input type="checkbox" id="geminiEnterKey">
+          <span class="slider"></span>
+        </label>
+        <div class="feature-desc" data-i18n="featureGeminiEnterKeyDesc">Use 'Enter' for new lines...</div>
+      </div>
+    </div>
+    
+    <div class="feature-toggle">
+      <div class="feature-info">
+        <span class="feature-name" data-i18n="featureGeminiLayoutWidth">Custom Content Width</span>
+        <label class="switch">
+          <input type="checkbox" id="geminiLayoutWidthEnabled">
+          <span class="slider"></span>
+        </label>
+        <div class="feature-desc" data-i18n="featureGeminiLayoutWidthDesc">Set a custom max-width...</div>
+      </div>
+    </div>
+    <div class="feature-sub-input">
+      <label for="geminiLayoutWidthValue">Width (px):</label>
+      <input type="number" id="geminiLayoutWidthValue" min="760" max="5000" step="10">
+    </div>
+
+  </div>
+
+  <h2 data-i18n="categoryGoogleChat">Google Chat Features</h2>
+  <div class="category-box">
+    <div class="feature-toggle">
+      <div class="feature-info">
+        <span class="feature-name" data-i18n="featureChatEnterKey">Reverse Enter/Submit</span>
+        <label class="switch">
+          <input type="checkbox" id="chatEnterKey">
+          <span class="slider"></span>
+        </label>
+        <div class="feature-desc" data-i18n="featureChatEnterKeyDesc">Use 'Enter' for new lines...</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="statusMessage" class="status-message" data-i18n="settingsSaved">
+    Settings saved!
+  </div>
+
+  <script src="js/options.js"></script>
+</body>
+</html>
