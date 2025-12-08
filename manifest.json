@@ -1,19 +1,57 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "public/options.html",
+    "default_icon": {
+      "16": "public/image/icon16.png",
+      "48": "public/image/icon48.png",
+      "128": "public/image/icon128.png"
+    }
+  },
   "content_scripts": [
     {
-      "matches": ["https://notebooklm.google.com/notebook/*"],
-      "js": ["public/js/content.js"],
+      "matches": [
+        "https://notebooklm.google.com/*"
+      ],
+      "js": [
+        "public/js/notebooklm-content.js"
+      ],
       "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://gemini.google.com/*"
+      ],
+      "js": [
+        "public/js/gemini-content.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://chat.google.com/*",
+        "https://mail.google.com/*"
+      ],
+      "js": [
+        "public/js/chat-content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
     }
   ],
   "icons": {
     "16": "public/image/icon16.png",
     "48": "public/image/icon48.png",
     "128": "public/image/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none';"
   }
 }
