@@ -15,6 +15,26 @@
     "message": "Enhancer 4 Google Settings",
     "description": "Title for the options page."
   },
+  "categoryGeneral": {
+    "message": "General Settings",
+    "description": "Category name for general settings."
+  },
+  "featureSubmitKeyModifier": {
+    "message": "Submit Modifier Key",
+    "description": "Label for the submit key modifier setting."
+  },
+  "featureSubmitKeyModifierDesc": {
+    "message": "Select the modifier key for sending messages when 'Reverse Enter/Submit' is enabled.",
+    "description": "Description for the submit key modifier setting."
+  },
+  "optionKeyShift": {
+    "message": "Shift + Enter",
+    "description": "Option label for Shift key."
+  },
+  "optionKeyCtrl": {
+    "message": "Ctrl + Enter",
+    "description": "Option label for Ctrl key."
+  },
   "categoryNotebookLM": {
     "message": "NotebookLM Features",
     "description": "Category name for NotebookLM."
@@ -40,7 +60,7 @@
     "description": "Feature name for NotebookLM Enter key."
   },
   "featureNblmEnterKeyDesc": {
-    "message": "Changes 'Enter' to create a new line and 'Shift + Enter' to submit the prompt.",
+    "message": "Changes 'Enter' to create a new line and uses the configured modifier (Shift/Ctrl) + 'Enter' to submit the prompt.",
     "description": "Description for NotebookLM Enter key."
   },
   "settingsSaved": {
@@ -64,7 +84,7 @@
     "description": "Feature name for Gemini Enter key."
   },
   "featureGeminiEnterKeyDesc": {
-    "message": "Changes 'Enter' to create a new line and 'Shift + Enter' to submit the prompt.",
+    "message": "Changes 'Enter' to create a new line and uses the configured modifier (Shift/Ctrl) + 'Enter' to submit the prompt.",
     "description": "Description for Gemini Enter key."
   },
   "featureGeminiLayoutWidth": {
@@ -84,7 +104,7 @@
     "description": "Feature name for Google Chat Enter key."
   },
   "featureChatEnterKeyDesc": {
-    "message": "Changes 'Enter' to create a new line and 'Shift + Enter' to send the message.",
+    "message": "Changes 'Enter' to create a new line and uses the configured modifier (Shift/Ctrl) + 'Enter' to send the message.",
     "description": "Description for Google Chat Enter key."
   }
 }

@@ -180,6 +180,48 @@
     .feature-toggle:has(#geminiLayoutWidthEnabled:checked) {
       border-bottom: none;
     }
+    /* --- カスタムドロップダウン (Select) のデザイン --- */
+    .custom-select {
+      /* デフォルトの見た目をリセット */
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+
+      /* サイズとフォント */
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 8px 32px 8px 12px; /* 右側のパディングを広くして矢印のスペースを確保 */
+      min-width: 140px;
+      
+      /* 色と境界線 */
+      background-color: #fff;
+      border: 1px solid #dfe1e5;
+      border-radius: 8px; /* 角丸を他のカードに合わせる */
+      color: var(--text-dark);
+      cursor: pointer;
+      
+      /* カスタム矢印アイコン (SVG) */
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 16px;
+      
+      /* アニメーション */
+      transition: all 0.2s ease;
+    }
+
+    /* ホバー時 */
+    .custom-select:hover {
+      background-color: #f8f9fa;
+      border-color: #dadce0;
+    }
+
+    /* フォーカス時 (テーマカラーで光らせる) */
+    .custom-select:focus {
+      outline: none;
+      border-color: var(--theme-color);
+      box-shadow: 0 0 0 3px var(--theme-color-light);
+    }
     /* --- 保存メッセージ --- */
     .status-message {
       position: fixed;
@@ -202,6 +244,21 @@
 <body>
 
 <h1 data-i18n="optionsTitle">Settings</h1>
+  <h2 data-i18n="categoryGeneral">General Settings</h2>
+  <div class="category-box">
+    <div class="feature-toggle">
+      <div class="feature-info">
+        <span class="feature-name" data-i18n="featureSubmitKeyModifier">Submit Modifier Key</span>
+        <div style="grid-area: toggle;">
+          <select id="submitKeyModifier" class="custom-select">
+            <option value="shift" data-i18n="optionKeyShift">Shift + Enter</option>
+            <option value="ctrl" data-i18n="optionKeyCtrl">Ctrl + Enter</option>
+          </select>
+        </div>
+        <div class="feature-desc" data-i18n="featureSubmitKeyModifierDesc">Select modifier key for submission...</div>
+      </div>
+    </div>
+  </div>
 
   <h2 data-i18n="categoryNotebookLM">NotebookLM Features</h2>
   <div class="category-box">

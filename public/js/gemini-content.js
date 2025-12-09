@@ -11,7 +11,8 @@ let settings = {
   geminiToolShortcuts: true,
   geminiEnterKey: true,
   geminiLayoutWidthEnabled: false,
-  geminiLayoutWidthValue: 1200
+  geminiLayoutWidthValue: 1200,
+  submitKeyModifier: 'shift'
 };
 
 /**
@@ -22,7 +23,8 @@ function loadSettings() {
     geminiToolShortcuts: true,
     geminiEnterKey: true,
     geminiLayoutWidthEnabled: false,
-    geminiLayoutWidthValue: 1200
+    geminiLayoutWidthValue: 1200,
+    submitKeyModifier: 'shift'
   }, (items) => {
     settings = items;
     // 読み込み完了時にカスタム幅を適用
@@ -354,7 +356,9 @@ const handleKeyDown = (event) => {
     return;
   }
   
-  if (event.shiftKey) {
+  const isSubmitModifierPressed = settings.submitKeyModifier === 'ctrl' ? event.ctrlKey : event.shiftKey;
+
+  if (isSubmitModifierPressed) {
     // --- Shift + Enter の場合 (送信) ---
     event.preventDefault(); // デフォルトの改行をキャンセル
     event.stopImmediatePropagation(); // 他のリスナー（Geminiネイティブ）を止める

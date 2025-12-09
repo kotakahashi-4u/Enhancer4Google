@@ -6,7 +6,8 @@
 
 // --- 設定管理 ---
 let settings = {
-  chatEnterKey: true
+  chatEnterKey: true,
+  submitKeyModifier: 'shift'
 };
 
 /**
@@ -14,7 +15,8 @@ let settings = {
  */
 function loadSettings() {
   chrome.storage.sync.get({
-    chatEnterKey: true
+    chatEnterKey: true,
+    submitKeyModifier: 'shift'
   }, (items) => {
     settings = items;
     if (settings.chatEnterKey) {
@@ -66,7 +68,9 @@ const handleGlobalKeyDown = (event) => {
     return; // 関係ない場所でのEnterキーは無視
   }
 
-  if (event.shiftKey) {
+  const isSubmitModifierPressed = settings.submitKeyModifier === 'ctrl' ? event.ctrlKey : event.shiftKey;
+
+  if (isSubmitModifierPressed) {
     // --- Shift + Enter の場合 (送信) ---
     event.preventDefault(); // デフォルトの改行をキャンセル
     event.stopImmediatePropagation(); // 他のリスナーを止める

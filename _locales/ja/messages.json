@@ -15,6 +15,26 @@
     "message": "Enhancer 4 Google 設定",
     "description": "設定ページのタイトル"
   },
+  "categoryGeneral": {
+    "message": "共通設定",
+    "description": "共通設定のカテゴリ名"
+  },
+  "featureSubmitKeyModifier": {
+    "message": "送信修飾キーの選択",
+    "description": "送信トリガーキー設定の名前"
+  },
+  "featureSubmitKeyModifierDesc": {
+    "message": "「Enterキーの動作変更」機能が有効な場合の、メッセージ送信の修飾キーを選択します。",
+    "description": "送信トリガーキー設定の説明"
+  },
+  "optionKeyShift": {
+    "message": "Shift + Enter",
+    "description": "Shiftキーの選択肢"
+  },
+  "optionKeyCtrl": {
+    "message": "Ctrl + Enter",
+    "description": "Ctrlキーの選択肢"
+  },
   "categoryNotebookLM": {
     "message": "NotebookLM 機能",
     "description": "NotebookLMのカテゴリ名"
@@ -40,7 +60,7 @@
     "description": "NotebookLMのEnterキー機能の名前"
   },
   "featureNblmEnterKeyDesc": {
-    "message": "「Enter」で改行、「Shift + Enter」でプロンプトを送信するように動作を変更します。",
+    "message": "「Enter」で改行を行い、設定した修飾キー（Shift/Ctrl）+ Enter でプロンプトを送信するように動作を変更します。",
     "description": "NotebookLMのEnterキー機能の説明"
   },
   "settingsSaved": {
@@ -64,7 +84,7 @@
     "description": "GeminiのEnterキー機能の名前"
   },
   "featureGeminiEnterKeyDesc": {
-    "message": "「Enter」で改行、「Shift + Enter」でプロンプトを送信するように動作を変更します。",
+    "message": "「Enter」で改行を行い、設定した修飾キー（Shift/Ctrl）+ Enter でプロンプトを送信するように動作を変更します。",
     "description": "GeminiのEnterキー機能の説明"
   },
   "featureGeminiLayoutWidth": {
@@ -84,7 +104,7 @@
     "description": "Google ChatのEnterキー機能の名前"
   },
   "featureChatEnterKeyDesc": {
-    "message": "「Enter」で改行、「Shift + Enter」でメッセージを送信するように動作を変更します。",
+    "message": "「Enter」で改行を行い、設定した修飾キー（Shift/Ctrl）+ Enter でメッセージを送信するように動作を変更します。",
     "description": "Google ChatのEnterキー機能の説明"
   }
 }

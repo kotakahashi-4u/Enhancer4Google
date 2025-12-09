@@ -38,6 +38,9 @@ function saveOptions() {
   // Google Chat
   const chatEnter = document.getElementById('chatEnterKey').checked;
 
+  // 送信キー設定の取得
+  const submitKey = document.getElementById('submitKeyModifier').value;
+
   chrome.storage.sync.set({
     collapsibleStudio: collapsible,
     hijackClicks: hijack,
@@ -46,7 +49,8 @@ function saveOptions() {
     geminiEnterKey: geminiEnter,
     geminiLayoutWidthEnabled: geminiLayoutWidthEnabled,
     geminiLayoutWidthValue: geminiLayoutWidthValue,
-    chatEnterKey: chatEnter
+    chatEnterKey: chatEnter,
+    submitKeyModifier: submitKey
   }, () => {
     // 保存完了メッセージを表示
     const status = document.getElementById('statusMessage');
@@ -70,7 +74,8 @@ function restoreOptions() {
     geminiEnterKey: true,
     geminiLayoutWidthEnabled: false,
     geminiLayoutWidthValue: 1200,
-    chatEnterKey: true
+    chatEnterKey: true,
+    submitKeyModifier: 'shift'
   }, (items) => {
     // NotebookLM
     document.getElementById('collapsibleStudio').checked = items.collapsibleStudio;
@@ -87,6 +92,9 @@ function restoreOptions() {
 
     // Googleチャット 
     document.getElementById('chatEnterKey').checked = items.chatEnterKey;
+
+    // 送信キー設定の反映
+    document.getElementById('submitKeyModifier').value = items.submitKeyModifier;
   });
 }
 
@@ -147,4 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Google Chat
   document.getElementById('chatEnterKey').addEventListener('change', saveOptions);
+
+  // 送信キー変更時にも保存を実行
+  document.getElementById('submitKeyModifier').addEventListener('change', saveOptions);
 });

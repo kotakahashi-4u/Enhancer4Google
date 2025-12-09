@@ -16,7 +16,8 @@ const NBLM_SUBMIT_BUTTON_SELECTOR = 'button.submit-button:not([disabled])'; // �
 let settings = {
   collapsibleStudio: true,
   hijackClicks: true,
-  notebooklmEnterKey: true
+  notebooklmEnterKey: true,
+  submitKeyModifier: 'shift'
 };
 
 /**
@@ -26,7 +27,8 @@ function loadSettings() {
   chrome.storage.sync.get({
     collapsibleStudio: true,
     hijackClicks: true,
-    notebooklmEnterKey: true
+    notebooklmEnterKey: true,
+    submitKeyModifier: 'shift'
   }, (items) => {
     settings = items;
   });
@@ -267,7 +269,9 @@ const handleNblmKeyDown = (event) => {
     return;
   }
 
-  if (event.shiftKey) {
+  const isSubmitModifierPressed = settings.submitKeyModifier === 'ctrl' ? event.ctrlKey : event.shiftKey;
+
+  if (isSubmitModifierPressed) {
     // --- Shift + Enter の場合 (送信) ---
     event.preventDefault(); // デフォルトの改行動作をキャンセル
     event.stopImmediatePropagation(); // 他のリスナーを止める
