@@ -106,5 +106,83 @@
   "featureChatEnterKeyDesc": {
     "message": "「Enter」で改行を行い、設定した修飾キー（Shift/Ctrl）+ Enter でメッセージを送信するように動作を変更します。",
     "description": "Google ChatのEnterキー機能の説明"
+  },
+  "featureSyncAllSources": {
+    "message": "全ソースの同期",
+    "description": "全ソース同期機能の名前"
+  },
+  "featureSyncAllSourcesBtn": {
+    "message": "全ソースを同期実行",
+    "description": "同期実行ボタンのラベル"
+  },
+  "featureSyncAllSourcesDesc": {
+    "message": "開いているNotebookLMの全ソースを巡回し、更新が必要な場合は同期ボタンを自動で押下します。",
+    "description": "全ソース同期機能の説明"
+  },
+  "syncingProcessTitle": {
+    "message": "🔄 同期処理中...",
+    "description": "同期中のタブタイトル"
+  },
+  "syncingCompleteAlert": {
+    "message": "全ソースの確認・同期が完了しました。",
+    "description": "同期完了時のアラート"
+  },
+  "syncingErrorNoTab": {
+    "message": "NotebookLMのタブが見つかりません。タブを開いた状態で実行してください。",
+    "description": "タブが見つからない場合のエラー"
+  },
+  "syncingErrorScript": {
+    "message": "スクリプトが読み込まれていません。NotebookLMのページをリロードしてください。",
+    "description": "コンテンツスクリプト未ロード時のエラー"
+  },
+  "syncingModalTitle": {
+    "message": "ソースを同期中...",
+    "description": "同期中のモーダルタイトル"
+  },
+  "syncingStatusProcessing": {
+    "message": "処理中: ",
+    "description": "進捗状況のプレフィックス"
+  },
+  "syncingStatusInitializing": {
+    "message": "準備中...",
+    "description": "初期化中のステータス"
+  },
+  "syncingOverlayWarning": {
+    "message": "画面を操作しないでください",
+    "description": "操作ブロック時の警告文"
+  },
+  "syncingResultTitle": {
+    "message": "同期完了",
+    "description": "結果モーダルのタイトル"
+  },
+  "syncingResultHeader": {
+    "message": "以下の $COUNT$ 件のソースを同期しました:",
+    "description": "同期成功件数の表示",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "syncingResultNone": {
+    "message": "更新が必要なソースはありませんでした。",
+    "description": "更新なしの場合のメッセージ"
+  },
+  "errorGeneric": {
+    "message": "エラーが発生しました: $DETAILS$",
+    "description": "汎用エラーメッセージ",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "errorNoSourcesFound": {
+    "message": "ソースが見つかりません。左サイドバーが表示されているか確認してください。",
+    "description": "ソースが見つからない場合のエラー"
+  },
+  "modalButtonOk": {
+    "message": "OK",
+    "description": "モーダルのOKボタン"
   }
 }

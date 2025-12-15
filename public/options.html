@@ -239,6 +239,29 @@
       pointer-events: none;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
+    .action-button {
+      background-color: var(--theme-color);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.2s, transform 0.1s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .action-button:hover {
+      background-color: #168ac3; /* テーマカラーより少し濃く */
+    }
+    .action-button:active {
+      transform: scale(0.98);
+    }
+    .action-button:disabled {
+      background-color: #bdc1c6;
+      cursor: not-allowed;
+      transform: none;
+    }
   </style>
 </head>
 <body>
@@ -292,6 +315,15 @@
           <span class="slider"></span>
         </label>
         <div class="feature-desc" data-i18n="featureNblmEnterKeyDesc">Use 'Enter' for new lines...</div>
+      </div>
+    </div>
+    <div class="feature-toggle">
+      <div class="feature-info">
+        <span class="feature-name" data-i18n="featureSyncAllSources">Sync All Sources</span>
+        <div style="grid-area: toggle;">
+          <button id="syncAllSourcesBtn" class="action-button" data-i18n="featureSyncAllSourcesBtn">Run Sync</button>
+        </div>
+        <div class="feature-desc" data-i18n="featureSyncAllSourcesDesc">Cycles through all sources...</div>
       </div>
     </div>
   </div>

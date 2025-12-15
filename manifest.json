@@ -7,6 +7,9 @@
   "permissions": [
     "storage"
   ],
+  "host_permissions": [
+    "https://notebooklm.google.com/*"
+  ],
   "action": {
     "default_popup": "public/options.html",
     "default_icon": {

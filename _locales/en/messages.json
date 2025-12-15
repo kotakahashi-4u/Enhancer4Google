@@ -106,5 +106,83 @@
   "featureChatEnterKeyDesc": {
     "message": "Changes 'Enter' to create a new line and uses the configured modifier (Shift/Ctrl) + 'Enter' to send the message.",
     "description": "Description for Google Chat Enter key."
+  },
+  "featureSyncAllSources": {
+    "message": "Sync All Sources",
+    "description": "Feature name for syncing all sources."
+  },
+  "featureSyncAllSourcesBtn": {
+    "message": "Run Sync",
+    "description": "Label for the sync button."
+  },
+  "featureSyncAllSourcesDesc": {
+    "message": "Cycles through all sources in the open NotebookLM and clicks the sync button if updates are available.",
+    "description": "Description for syncing all sources feature."
+  },
+  "syncingProcessTitle": {
+    "message": "🔄 Syncing...",
+    "description": "Tab title during sync."
+  },
+  "syncingCompleteAlert": {
+    "message": "Check and sync of all sources completed.",
+    "description": "Alert when sync is complete."
+  },
+  "syncingErrorNoTab": {
+    "message": "NotebookLM tab not found. Please open NotebookLM first.",
+    "description": "Error when tab is not found."
+  },
+  "syncingErrorScript": {
+    "message": "Script not loaded. Please reload the NotebookLM page.",
+    "description": "Error when content script is not loaded."
+  },
+  "syncingModalTitle": {
+    "message": "Syncing Sources...",
+    "description": "Modal title during sync"
+  },
+  "syncingStatusProcessing": {
+    "message": "Processing: ",
+    "description": "Prefix for progress status"
+  },
+  "syncingStatusInitializing": {
+    "message": "Initializing...",
+    "description": "Status during initialization"
+  },
+  "syncingOverlayWarning": {
+    "message": "Please do not operate the screen.",
+    "description": "Warning on the overlay"
+  },
+  "syncingResultTitle": {
+    "message": "Sync Complete",
+    "description": "Title of the result modal"
+  },
+  "syncingResultHeader": {
+    "message": "Synced $COUNT$ sources:",
+    "description": "Header for synced sources list",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "syncingResultNone": {
+    "message": "No sources needed updating.",
+    "description": "Message when no sources were updated"
+  },
+  "errorGeneric": {
+    "message": "Error occurred: $DETAILS$",
+    "description": "Generic error message",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "errorNoSourcesFound": {
+    "message": "No sources found. Please ensure the left sidebar is visible.",
+    "description": "Error when no sources are found"
+  },
+  "modalButtonOk": {
+    "message": "OK",
+    "description": "OK button text"
   }
 }

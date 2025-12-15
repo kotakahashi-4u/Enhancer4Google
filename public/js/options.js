@@ -158,4 +158,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 送信キー変更時にも保存を実行
   document.getElementById('submitKeyModifier').addEventListener('change', saveOptions);
+
+  // --- 全ソース同期ボタンの処理 ---
+  const syncBtn = document.getElementById('syncAllSourcesBtn');
+  if (syncBtn) {
+    syncBtn.addEventListener('click', async () => {
+      // ボタンを一時的に無効化
+      syncBtn.disabled = true;
+      const originalText = syncBtn.textContent;
+      syncBtn.textContent = "Running...";
+
+      // アクティブなNotebookLMタブを探す
+      const tabs = await chrome.tabs.query({ url: "https://notebooklm.google.com/*" });
+      
+      // 開いているタブの中で最後のアクティブなもの、あるいは最初のものを選択
+      const targetTab = tabs.find(t => t.active) || tabs[0];
+
+      if (targetTab) {
+        try {
+          // コンテンツスクリプトへメッセージ送信
+          await chrome.tabs.sendMessage(targetTab.id, { action: "SYNC_ALL_SOURCES" });
+          // 成功時はスクリプト側でアラートが出るため、ここではボタンを戻すだけ
+        } catch (e) {
+          console.error(e);
+          alert(chrome.i18n.getMessage("syncingErrorScript"));
+        }
+      } else {
+        alert(chrome.i18n.getMessage("syncingErrorNoTab"));
+      }
+
+      // ボタンを復帰
+      syncBtn.disabled = false;
+      syncBtn.textContent = originalText;
+    });
+  }
 });
