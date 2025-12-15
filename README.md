@@ -2,19 +2,22 @@
 Google各種サービスに対する拡張機能群。
 
 ## 現在有効な機能
+### 共通機能
+1. Enterボタン動作改善ON時の送信キー選択（Shift+Enter / Ctrl+Enter）
+
 ### NotebookLM
 1. NotebookLMのStudioパネルに各種機能群リンクを発生させ、Studioエリアに開閉機能を付与する。
 2. NotebookLMのStudioパネルにあるアクションボタン群の動作改善
-3. プロンプトエリアのEnterボタン動作改善（Enter: 改行、Shift+Enter: 送信）
+3. プロンプトエリアのEnterボタン動作改善（Enter: 改行、共通機能に依存: 送信）
+4. ソースエリアの自動同期化機能
 
 ### Gemini
 1. DeepResearchやCanvasのチャットエリアへの露出
 2. コンテンツエリアの領域拡大
-3. プロンプトエリアのEnterボタン動作改善（Enter: 改行、Shift+Enter: 送信）
-
+3. プロンプトエリアのEnterボタン動作改善（Enter: 改行、共通機能に依存: 送信）
 
 ### Googleチャット
-1. チャットエリアのEnterボタン動作改善（Enter: 改行、Shift+Enter: 送信）
+1. チャットエリアのEnterボタン動作改善（Enter: 改行、共通機能に依存: 送信）
  
 ## 使い方
 1. 本リポジトリを「Download Zip」機能を用いてローカルダウンロードする。
