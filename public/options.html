@@ -4,389 +4,540 @@
   <meta charset="UTF-8">
   <title data-i18n="optionsTitle">Enhancer 4 Google Settings</title>
   <style>
+    /* --- 基本テーマ設定 --- */
     :root {
       --theme-color: #1BA1E3;
       --theme-color-light: rgba(27, 161, 227, 0.2);
-      --theme-secondary-color: #9168C0;
       --text-dark: #2c3e50;
       --text-light: #7f8c8d;
-      --bg-main: #f4f7f6;
+      --bg-main: #f8f9fa;
       --bg-card: #ffffff;
       --border-color: #ecf0f1;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
+      font-family: "Google Sans", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      margin: 0 auto;
+      padding: 0; 
       background-color: var(--bg-main);
       color: var(--text-dark);
-      width: 380px; /* 少し幅を広げて窮屈さを解消 */
+      /* レスポンス対応: ポップアップでは400px、タブでは最大800px */
+      width: 100%;
+      min-width: 400px;
+      max-width: 400px;
+      min-height: 500px;
+      transition: max-width 0.3s ease;
+    }
+    
+    /* タブモード（ウィンドウ幅が広い場合）用のスタイル */
+    @media (min-width: 600px) {
+      body {
+        max-width: 800px;
+      }
+    }
+
+    /* --- ヘッダー --- */
+    .header {
+      background: var(--bg-card);
+      padding: 16px 20px 0 20px;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     h1 {
-      font-size: 1.5rem;
-      font-weight: 600;
+      font-size: 1.3rem;
+      font-weight: 500;
       color: var(--text-dark);
-      border-bottom: 3px solid var(--theme-color); /* テーマカラーをアクセントに */
-      padding-bottom: 12px;
-      margin-top: 0;
-      margin-bottom: 24px;
+      margin: 0 0 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    /* --- タブナビゲーション --- */
+    .tab-container {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      white-space: nowrap;
+      margin-bottom: -1px;
+    }
+    .tab-container::-webkit-scrollbar {
+      display: none;
     }
 
-    h2 {
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 10px 4px;
+      font-family: inherit;
       font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      margin-top: 30px;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-weight: 500;
+      color: var(--text-light);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: var(--theme-color);
+    }
+
+    .tab-btn.active {
+      color: var(--theme-color);
+      border-bottom-color: var(--theme-color);
+    }
+
+    /* --- コンテンツエリア --- */
+    .content-area {
+      padding: 20px;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.2s ease-out;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .category-box {
       background-color: var(--bg-card);
-      border: none;
-      border-radius: 12px; /* 角を丸く */
-      padding: 0; /* 子要素でパディングを管理 */
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* モダンな影 */
-      overflow: hidden; /* 子要素の角丸を強制 */
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      margin-bottom: 20px;
     }
 
     .feature-toggle {
-      padding: 16px 20px;
+      padding: 16px;
       border-bottom: 1px solid var(--border-color);
-      transition: background-color 0.2s ease;
     }
-    .feature-toggle:hover {
-      background-color: #fcfcfc;
-    }
-    .feature-toggle:last-child {
-      border-bottom: none;
-    }
+    .feature-toggle:last-child { border-bottom: none; }
 
     .feature-info {
-      display: grid; /* Gridレイアウトでトグルとテキストを整列 */
-      grid-template-columns: 1fr auto; /* [テキスト] auto[トグル] */
-      grid-template-rows: auto auto;
-      grid-template-areas:
-        "name   toggle"
-        "desc   toggle"; /* トグルが2行をまたぐ */
+      display: grid;
+      grid-template-columns: 1fr auto;
       align-items: center;
-      gap: 4px 12px; /* 縦4px, 横12pxの隙間 */
+      gap: 4px 12px;
     }
 
     .feature-name {
-      grid-area: name;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 500;
       color: var(--text-dark);
     }
 
     .feature-desc {
-      grid-area: desc;
-      font-size: 0.85rem;
+      grid-column: 1 / -1;
+      font-size: 0.8rem;
       color: var(--text-light);
-      margin-top: 0;
+      margin-top: 4px;
       line-height: 1.4;
     }
 
-    /* --- テーマカラーを適用したスイッチ --- */
+    /* --- スイッチ --- */
     .switch {
-      grid-area: toggle;
-      position: relative;
-      display: inline-block;
-      width: 38px;
-      height: 22px;
-      flex-shrink: 0;
+      position: relative; display: inline-block; width: 36px; height: 20px;
     }
-    .switch input { 
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    .switch input { opacity: 0; width: 0; height: 0; }
     .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #bdc1c6; /* OFFの色 */
-      transition: .3s;
-      border-radius: 34px;
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #bdc1c6; transition: .3s; border-radius: 34px;
     }
     .slider:before {
-      position: absolute;
-      content: "";
-      height: 16px;
-      width: 16px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .3s;
-      border-radius: 50%;
-      box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 2px 0 rgba(0,0,0,0.12);
+      position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
+      background-color: white; transition: .3s; border-radius: 50%;
     }
+    input:checked + .slider { background-color: var(--theme-color); }
+    input:checked + .slider:before { transform: translateX(16px); }
 
-    input:checked + .slider {
-      background-color: var(--theme-color); /* ★テーマカラー★ */
-    }
-    input:focus + .slider {
-      box-shadow: 0 0 1px var(--theme-color);
-    }
-    input:checked + .slider:before {
-      transform: translateX(16px);
-    }
-
-    /* --- 数値入力欄のデザイン --- */
-   .feature-sub-input {
-      width: auto; /* 100%を解除 */
-      padding: 0px 20px 16px 20px; 
-      margin-top: 0;
-      display: none; /* デフォルトは非表示 (JSで制御) */
-      align-items: center;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .feature-sub-input label {
-      font-size: 0.85rem;
-      color: var(--text-dark);
-      margin-right: 8px;
-    }
-    .feature-sub-input input[type="number"] {
-      width: 80px;
-      padding: 6px 10px;
-      border: 1px solid #dfe4e8;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      color: var(--text-dark);
-      transition: all 0.2s ease;
-    }
-    .feature-sub-input input[type="number"]:focus {
-      outline: none;
-      border-color: var(--theme-color);
-      box-shadow: 0 0 0 2px var(--theme-color-light);
-    }
-    .feature-sub-input input[type="number"]:disabled {
-      background-color: #f1f3f4;
-      color: #bdc1c6;
-    }
-    /* トグルがONの時だけ数値入力を表示 */
-    .feature-toggle:has(input[type="checkbox"]:checked) + .feature-sub-input {
-      display: flex; 
-    }
-
-    /* Gemini幅設定トグルがONの時、そのトグル自体の下線を消す */
-    .feature-toggle:has(#geminiLayoutWidthEnabled:checked) {
-      border-bottom: none;
-    }
-    /* --- カスタムドロップダウン (Select) のデザイン --- */
-    .custom-select {
-      /* デフォルトの見た目をリセット */
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-
-      /* サイズとフォント */
-      font-family: inherit;
-      font-size: 0.9rem;
-      padding: 8px 32px 8px 12px; /* 右側のパディングを広くして矢印のスペースを確保 */
-      min-width: 140px;
-      
-      /* 色と境界線 */
-      background-color: #fff;
-      border: 1px solid #dfe1e5;
-      border-radius: 8px; /* 角丸を他のカードに合わせる */
-      color: var(--text-dark);
-      cursor: pointer;
-      
-      /* カスタム矢印アイコン (SVG) */
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 8px center;
-      background-size: 16px;
-      
-      /* アニメーション */
-      transition: all 0.2s ease;
-    }
-
-    /* ホバー時 */
-    .custom-select:hover {
-      background-color: #f8f9fa;
-      border-color: #dadce0;
-    }
-
-    /* フォーカス時 (テーマカラーで光らせる) */
-    .custom-select:focus {
-      outline: none;
-      border-color: var(--theme-color);
-      box-shadow: 0 0 0 3px var(--theme-color-light);
-    }
-    /* --- 保存メッセージ --- */
-    .status-message {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: var(--text-dark); /* プロフェッショナルな濃い色に */
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      opacity: 0;
-      transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-      pointer-events: none;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    /* --- 入力要素 --- */
+    .custom-select, input[type="text"], input[type="number"] {
+      padding: 6px 10px; border: 1px solid #dfe1e5; border-radius: 6px;
+      font-size: 0.85rem; color: var(--text-dark);
+      background: #fff; width: 100%; box-sizing: border-box;
     }
     .action-button {
-      background-color: var(--theme-color);
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      font-weight: 500;
-      transition: background-color 0.2s, transform 0.1s;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      background-color: var(--theme-color); color: white; border: none;
+      padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer;
+      font-weight: 500; white-space: nowrap;
     }
-    .action-button:hover {
-      background-color: #168ac3; /* テーマカラーより少し濃く */
+    .action-button:hover { background-color: #168ac3; }
+
+    /* --- 通知メッセージ --- */
+    .status-message {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background-color: #323232; color: #fff; padding: 10px 20px;
+      border-radius: 20px; font-size: 0.85rem; opacity: 0; pointer-events: none;
+      transition: opacity 0.3s; z-index: 100;
     }
-    .action-button:active {
-      transform: scale(0.98);
+    
+    .feature-sub-input {
+      padding: 6px 6px 0px 6px;
+      display: none; align-items: center;
     }
-    .action-button:disabled {
-      background-color: #bdc1c6;
-      cursor: not-allowed;
-      transform: none;
+    .feature-toggle:has(input:checked) > * > .feature-sub-input { display: flex; }
+
+    /* --- モーダル --- */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none; align-items: center; justify-content: center;
+      z-index: 2000; opacity: 0; transition: opacity 0.2s;
+    }
+    .modal-overlay.active { display: flex; opacity: 1; }
+    .modal-box {
+      background: #fff; width: 300px; max-width: 90%;
+      border-radius: 12px; padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transform: translateY(20px); transition: transform 0.2s;
+      text-align: center;
+    }
+    .modal-overlay.active .modal-box { transform: translateY(0); }
+    .modal-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 12px; color: var(--text-dark); }
+    .modal-text { font-size: 0.9rem; color: var(--text-dark); margin-bottom: 24px; line-height: 1.5; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+    .modal-btn { padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; border: none; }
+    .modal-btn-primary { background: var(--theme-color); color: #fff; }
+    .modal-btn-primary:hover { background: #168ac3; }
+    .modal-btn-secondary { background: #f1f3f4; color: #5f6368; }
+    .modal-btn-secondary:hover { background: #e8eaed; }
+    .modal-btn-danger { background: #ff5252; color: #fff; }
+    .modal-btn-danger:hover { background: #d32f2f; }
+
+    /* --- スケジューラー & クローラー --- */
+    .scheduler-container {
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 12px;
+    }
+    .scheduler-form { display: grid; gap: 12px; margin-bottom: 16px; }
+    .scheduler-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .scheduler-list-header {
+      font-size: 0.8rem; font-weight: 600; color: #5f6368;
+      margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px;
+    }
+    .scheduler-list {
+      list-style: none; padding: 0; margin: 0; max-height: 200px; overflow-y: auto;
+    }
+    .scheduler-item {
+      background: #fff; border: 1px solid #eee; border-radius: 6px; padding: 10px; margin-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center; transition: box-shadow 0.2s;
+    }
+    .scheduler-item:hover { box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-color: #ddd; }
+    .scheduler-item-info { flex: 1; min-width: 0; margin-right: 12px; display: flex; flex-direction: column; justify-content: center; }
+    .scheduler-item-desc {
+      font-weight: 600; color: #1BA1E3; font-size: 0.95rem; margin-bottom: 4px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
+    }
+    .scheduler-item-url {
+      font-size: 0.75rem; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .scheduler-actions { display: flex; gap: 6px; }
+    .badge-auto-close {
+      font-size: 0.75rem; background: #e8f0fe; color: #1967d2; padding: 2px 8px;
+      border-radius: 4px; font-weight: 500; display: inline-block; margin-bottom: 4px; align-self: flex-start;
+    }
+    .editing-highlight { border-color: var(--theme-color); background-color: #f0f9ff; }
+
+    /* --- クローラー ステータス表示 --- */
+    .crawler-status-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.85rem; margin-bottom: 8px; color: var(--theme-color); font-weight: bold;
+    }
+    .crawler-status-text {
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; margin-right: 10px;
+    }
+    .crawler-status-count {
+      white-space: nowrap; flex-shrink: 0; background: #e1f5fe; padding: 2px 6px; border-radius: 4px;
+    }
+    #crawlerLog {
+      display: none; font-size: 0.75rem; color: #666; max-height: 100px;
+      overflow-y: auto; background: #fff; border: 1px solid #eee; padding: 6px; border-radius: 4px;
     }
   </style>
 </head>
 <body>
 
-<h1 data-i18n="optionsTitle">Settings</h1>
-  <h2 data-i18n="categoryGeneral">General Settings</h2>
-  <div class="category-box">
-    <div class="feature-toggle">
-      <div class="feature-info">
-        <span class="feature-name" data-i18n="featureSubmitKeyModifier">Submit Modifier Key</span>
-        <div style="grid-area: toggle;">
-          <select id="submitKeyModifier" class="custom-select">
-            <option value="shift" data-i18n="optionKeyShift">Shift + Enter</option>
-            <option value="ctrl" data-i18n="optionKeyCtrl">Ctrl + Enter</option>
-          </select>
+  <div class="header">
+    <h1 data-i18n="optionsTitle">Enhancer Settings</h1>
+    <div class="tab-container" id="tabContainer">
+      <button class="tab-btn active" data-target="tab-general" data-i18n="categoryGeneral">General</button>
+      <button class="tab-btn" data-target="tab-notebooklm" data-i18n="categoryNotebookLM">NotebookLM</button>
+      <button class="tab-btn" data-target="tab-gemini" data-i18n="categoryGemini">Gemini</button>
+      <button class="tab-btn" data-target="tab-chat" data-i18n="categoryGoogleChat">Chat</button>
+      <button class="tab-btn" data-target="tab-slides" data-i18n="categorySlides">Slides</button>
+    </div>
+  </div>
+
+  <div class="content-area">
+
+    <div id="tab-general" class="tab-content active">
+      <div class="category-box">
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="featureSubmitKeyModifier">Submit Modifier Key</span>
+            <div style="grid-column: 2;">
+              <select id="submitKeyModifier" class="custom-select" style="width: auto;">
+                <option value="shift" data-i18n="optionKeyShift">Shift + Enter</option>
+                <option value="ctrl" data-i18n="optionKeyCtrl">Ctrl + Enter</option>
+              </select>
+            </div>
+            <div class="feature-desc" data-i18n="featureSubmitKeyModifierDesc">Select modifier key...</div>
+          </div>
         </div>
-        <div class="feature-desc" data-i18n="featureSubmitKeyModifierDesc">Select modifier key for submission...</div>
-      </div>
-    </div>
-  </div>
-
-  <h2 data-i18n="categoryNotebookLM">NotebookLM Features</h2>
-  <div class="category-box">
-    <div class="feature-toggle">
-      <div class="feature-info">
-        <span class="feature-name" data-i18n="featureCollapsibleStudio">Collapsible Studio Panel</span>
-        <label class="switch">
-          <input type="checkbox" id="collapsibleStudio">
-          <span class="slider"></span>
-        </label>
-        <div class="feature-desc" data-i18n="featureCollapsibleStudioDesc">Adds a collapsible section...</div>
       </div>
     </div>
 
-    <div class="feature-toggle">
-      <div class="feature-info">
-        <span class="feature-name" data-i18n="featureButtonEnhancer">Studio Button Enhancer</span>
-        <label class="switch">
-          <input type="checkbox" id="hijackClicks">
-          <span class="slider"></span>
-        </label>
-        <div class="feature-desc" data-i18n="featureButtonEnhancerDesc">Changes the default click action...</div>
-      </div>
-    </div>
-    
-    <div class="feature-toggle">
-      <div class="feature-info">
-        <span class="feature-name" data-i18n="featureNblmEnterKey">Reverse Enter/Submit</span>
-        <label class="switch">
-          <input type="checkbox" id="notebooklmEnterKey">
-          <span class="slider"></span>
-        </label>
-        <div class="feature-desc" data-i18n="featureNblmEnterKeyDesc">Use 'Enter' for new lines...</div>
-      </div>
-    </div>
-    <div class="feature-toggle">
-      <div class="feature-info">
-        <span class="feature-name" data-i18n="featureSyncAllSources">Sync All Sources</span>
-        <div style="grid-area: toggle;">
-          <button id="syncAllSourcesBtn" class="action-button" data-i18n="featureSyncAllSourcesBtn">Run Sync</button>
+    <div id="tab-notebooklm" class="tab-content">
+      <div class="category-box">
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="manualSyncLabel">Manual Sync</span>
+            <div style="grid-column: 2;">
+              <button id="syncAllSourcesBtn" class="action-button" data-i18n="manualSyncBtn">Run Sync Now</button>
+            </div>
+            <div class="feature-desc" data-i18n="manualSyncDesc">Immediately runs...</div>
+          </div>
         </div>
-        <div class="feature-desc" data-i18n="featureSyncAllSourcesDesc">Cycles through all sources...</div>
+
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="featureCollapsibleStudio">Collapsible Studio Panel</span>
+            <label class="switch">
+              <input type="checkbox" id="collapsibleStudio">
+              <span class="slider"></span>
+            </label>
+            <div class="feature-desc" data-i18n="featureCollapsibleStudioDesc">Adds a collapsible section...</div>
+          </div>
+        </div>
+        
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="featureButtonEnhancer">Studio Button Enhancer</span>
+            <label class="switch">
+              <input type="checkbox" id="hijackClicks">
+              <span class="slider"></span>
+            </label>
+            <div class="feature-desc" data-i18n="featureButtonEnhancerDesc">Force edit mode...</div>
+          </div>
+        </div>
+        
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="featureNblmEnterKey">Reverse Enter/Submit</span>
+            <label class="switch">
+              <input type="checkbox" id="notebooklmEnterKey">
+              <span class="slider"></span>
+            </label>
+            <div class="feature-desc" data-i18n="featureNblmEnterKeyDesc">Enter for new line...</div>
+          </div>
+        </div>
+
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="featureWebCrawler">Web Crawler & Source Generator</span>
+            <div class="feature-desc" data-i18n="featureWebCrawlerDesc">Crawls the specified URL...</div>
+          </div>
+
+          <div class="scheduler-container" style="margin-top: 12px;">
+            <div class="scheduler-form">
+              <div class="scheduler-row">
+                <label style="font-size:0.85rem; width: 70px;" data-i18n="crawlerUrlLabel">Root URL:</label>
+                <input type="text" id="crawlerUrl" placeholder="https://example.com/docs/" style="flex:1;">
+              </div>
+              <div class="scheduler-row">
+                <label style="font-size:0.85rem; width: 70px;" data-i18n="crawlerDepthLabel">Depth:</label>
+                <input type="number" id="crawlerDepth" value="1" min="0" max="5" style="width: 60px;">
+                
+                <label style="font-size:0.85rem; width: 70px; margin-left: 10px;" data-i18n="crawlerMaxPagesLabel">Max Pages:</label>
+                <input type="number" id="crawlerMaxPages" value="50" min="1" max="100" style="width: 60px;">
+
+                <button id="crawlerRunBtn" class="action-button" style="margin-left: auto;" data-i18n="crawlerRunBtn">Run</button>
+              </div>
+            </div>
+            
+            <div class="crawler-status-row" id="crawlerStatusRow" style="display: none;">
+              <span id="crawlerStatusText" class="crawler-status-text"></span>
+              <span id="crawlerStatusCount" class="crawler-status-count"></span>
+            </div>
+            
+            <div id="crawlerLog"></div>
+          </div>
+        </div>
+
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="featureScheduleSync">Sync Scheduler</span>
+            <div class="feature-desc" data-i18n="featureScheduleSyncDesc">Auto sync scheduler...</div>
+          </div>
+
+          <div class="scheduler-container">
+            <div class="scheduler-form" id="schedulerForm">
+              <div class="scheduler-row">
+                <input type="text" id="schedUrl" placeholder="https://notebooklm.google.com/..." style="flex:1;" data-i18n="schedulerUrlPlaceholder">
+              </div>
+
+              <div class="scheduler-row">
+                <select id="schedType" class="custom-select" style="width:110px;">
+                  <option value="hourly" data-i18n="schedulerFreqHourly">Hourly</option>
+                  <option value="daily" data-i18n="schedulerFreqDaily">Daily</option>
+                  <option value="weekly" data-i18n="schedulerFreqWeekly">Weekly</option>
+                  <option value="monthly" data-i18n="schedulerFreqMonthly">Monthly</option>
+                </select>
+
+                <div id="schedOptions" style="display:flex; gap:8px; align-items:center;">
+                  <select id="schedDayOfWeek" class="custom-select" style="width:100px; display:none;">
+                    <option value="0" data-i18n="daySun">Sun</option>
+                    <option value="1" data-i18n="dayMon">Mon</option>
+                    <option value="2" data-i18n="dayTue">Tue</option>
+                    <option value="3" data-i18n="dayWed">Wed</option>
+                    <option value="4" data-i18n="dayThu">Thu</option>
+                    <option value="5" data-i18n="dayFri">Fri</option>
+                    <option value="6" data-i18n="daySat">Sat</option>
+                  </select>
+
+                  <select id="schedDayOfMonth" class="custom-select" style="width:80px; display:none;">
+                    </select>
+
+                  <input type="time" id="schedTime" class="custom-select" style="width:110px; display:none;">
+                </div>
+              </div>
+
+              <div class="scheduler-row" style="justify-content: space-between;">
+                <div style="display:flex; align-items:center;">
+                  <input type="checkbox" id="schedAutoClose" style="margin-right:6px;">
+                  <label for="schedAutoClose" style="font-size:0.85rem; cursor:pointer;" data-i18n="schedulerAutoClose">Auto-close</label>
+                </div>
+
+                <button id="schedAddBtn" class="action-button" style="min-width: 80px;" data-i18n="schedulerAddBtn">Add</button>
+              </div>
+            </div>
+
+            <div class="scheduler-list-header" data-i18n="schedulerListHeader">Scheduled Tasks</div>
+            <ul id="schedList" class="scheduler-list">
+              </ul>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <h2 data-i18n="categoryGemini">Gemini Features</h2>
-  <div class="category-box">
+    <div id="tab-gemini" class="tab-content">
+      <div class="category-box">
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="featureGeminiShortcuts">Tool Shortcuts</span>
+            <label class="switch">
+              <input type="checkbox" id="geminiToolShortcuts">
+              <span class="slider"></span>
+            </label>
+            <div class="feature-desc" data-i18n="featureGeminiShortcutsDesc">Quick access buttons...</div>
+          </div>
+        </div>
+        
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="featureGeminiEnterKey">Reverse Enter/Submit</span>
+            <label class="switch">
+              <input type="checkbox" id="geminiEnterKey">
+              <span class="slider"></span>
+            </label>
+            <div class="feature-desc" data-i18n="featureGeminiEnterKeyDesc">Enter for new line...</div>
+          </div>
+        </div>
+
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="featureGeminiLayoutWidth">Custom Content Width</span>
+            <label class="switch">
+              <input type="checkbox" id="geminiLayoutWidthEnabled">
+              <span class="slider"></span>
+            </label>
+            <div class="feature-desc" data-i18n="featureGeminiLayoutWidthDesc">Max width setting...</div>            
+            <div class="feature-sub-input">
+              <label style="font-size:0.85rem; margin-right:8px;">Width (px):</label>
+              <input type="number" id="geminiLayoutWidthValue" min="760" max="5000" step="10" style="width:80px;">
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="optionGemManagerSearch">Gem Manager Search</span>
+            <label class="switch">
+              <input type="checkbox" id="enableGemManagerSearch">
+              <span class="slider"></span>
+            </label>
+            <div class="feature-desc" data-i18n="optionGemManagerSearchDesc">Adds a search bar to the Gem Manager page.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="tab-chat" class="tab-content">
+      <div class="category-box">
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="featureChatEnterKey">Reverse Enter/Submit</span>
+            <label class="switch">
+              <input type="checkbox" id="chatEnterKey">
+              <span class="slider"></span>
+            </label>
+            <div class="feature-desc" data-i18n="featureChatEnterKeyDesc">Enter for new line...</div>
+          </div>
+        </div>
+      </div>
+    </div>
     
-    <div class="feature-toggle">
-      <div class="feature-info">
-        <span class="feature-name" data-i18n="featureGeminiShortcuts">Tool Shortcuts</span>
-        <label class="switch">
-          <input type="checkbox" id="geminiToolShortcuts">
-          <span class="slider"></span>
-        </label>
-        <div class="feature-desc" data-i18n="featureGeminiShortcutsDesc">Show Deep Research and Canvas...</div>
+    <div id="tab-slides" class="tab-content">
+      <div class="category-box">
+        <div class="feature-toggle">
+          <div class="feature-info">
+            <span class="feature-name" data-i18n="featureSlidesPdfImport">PDF Import & Image ZIP</span>
+            <label class="switch">
+              <input type="checkbox" id="slidesPdfImport">
+              <span class="slider"></span>
+            </label>
+            <div class="feature-desc" data-i18n="featureSlidesPdfImportDesc">Adds import button...</div>
+            <div class="feature-sub-input" style="display: block; padding-top: 10px;">
+              <label style="font-size:0.85rem; display:block; margin-bottom:4px;" data-i18n="optionSlidesGasUrl">GAS Web App URL:</label>
+              <input type="text" id="slidesGasUrl" placeholder="https://script.google.com/macros/s/..." style="width:100%;">
+              <div style="font-size:0.75rem; color:#666; margin-top:4px;" data-i18n="optionSlidesGasUrlDesc">Enter the URL...</div>
+              <div style="margin-top: 6px;">
+                <a href="https://github.com/kotakahashi-4u/GASApp4NotebookLMSlide2GoogleSlide" target="_blank" style="font-size: 0.75rem; color: var(--theme-color); text-decoration: none; display: inline-flex; align-items: center;" data-i18n="gasSetupGuide">
+                  GAS Setup Guide (GitHub)
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    
-    <div class="feature-toggle">
-      <div class="feature-info">
-        <span class="feature-name" data-i18n="featureGeminiEnterKey">Reverse Enter/Submit</span>
-        <label class="switch">
-          <input type="checkbox" id="geminiEnterKey">
-          <span class="slider"></span>
-        </label>
-        <div class="feature-desc" data-i18n="featureGeminiEnterKeyDesc">Use 'Enter' for new lines...</div>
-      </div>
-    </div>
-    
-    <div class="feature-toggle">
-      <div class="feature-info">
-        <span class="feature-name" data-i18n="featureGeminiLayoutWidth">Custom Content Width</span>
-        <label class="switch">
-          <input type="checkbox" id="geminiLayoutWidthEnabled">
-          <span class="slider"></span>
-        </label>
-        <div class="feature-desc" data-i18n="featureGeminiLayoutWidthDesc">Set a custom max-width...</div>
-      </div>
-    </div>
-    <div class="feature-sub-input">
-      <label for="geminiLayoutWidthValue">Width (px):</label>
-      <input type="number" id="geminiLayoutWidthValue" min="760" max="5000" step="10">
     </div>
 
   </div>
 
-  <h2 data-i18n="categoryGoogleChat">Google Chat Features</h2>
-  <div class="category-box">
-    <div class="feature-toggle">
-      <div class="feature-info">
-        <span class="feature-name" data-i18n="featureChatEnterKey">Reverse Enter/Submit</span>
-        <label class="switch">
-          <input type="checkbox" id="chatEnterKey">
-          <span class="slider"></span>
-        </label>
-        <div class="feature-desc" data-i18n="featureChatEnterKeyDesc">Use 'Enter' for new lines...</div>
-      </div>
+  <div id="customModal" class="modal-overlay">
+    <div class="modal-box">
+      <div id="modalTitle" class="modal-title">Title</div>
+      <div id="modalText" class="modal-text">Message goes here.</div>
+      <div id="modalActions" class="modal-actions">
+        </div>
     </div>
   </div>
 
-  <div id="statusMessage" class="status-message" data-i18n="settingsSaved">
-    Settings saved!
-  </div>
+  <div id="statusMessage" class="status-message" data-i18n="settingsSaved">Settings saved!</div>
 
   <script src="js/options.js"></script>
 </body>

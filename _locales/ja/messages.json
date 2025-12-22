@@ -1,188 +1,487 @@
 {
-  "extensionName": {
-    "message": "Enhancer 4 Google",
-    "description": "拡張機能の名前"
-  },
-  "extensionDescription": {
-    "message": "各種GoogleサービスのUIを改善し、ただでさえ使いやすいGoogleサービスをさらにレベルアップさせます。",
-    "description": "拡張機能の説明"
-  },
-  "featuresLabel": {
-    "message": "各種機能群",
-    "description": "折りたたみ部分のラベル"
-  },
-  "optionsTitle": {
-    "message": "Enhancer 4 Google 設定",
-    "description": "設定ページのタイトル"
-  },
-  "categoryGeneral": {
-    "message": "共通設定",
-    "description": "共通設定のカテゴリ名"
-  },
-  "featureSubmitKeyModifier": {
-    "message": "送信修飾キーの選択",
-    "description": "送信トリガーキー設定の名前"
-  },
-  "featureSubmitKeyModifierDesc": {
-    "message": "「Enterキーの動作変更」機能が有効な場合の、メッセージ送信の修飾キーを選択します。",
-    "description": "送信トリガーキー設定の説明"
-  },
-  "optionKeyShift": {
-    "message": "Shift + Enter",
-    "description": "Shiftキーの選択肢"
-  },
-  "optionKeyCtrl": {
-    "message": "Ctrl + Enter",
-    "description": "Ctrlキーの選択肢"
-  },
-  "categoryNotebookLM": {
-    "message": "NotebookLM 機能",
-    "description": "NotebookLMのカテゴリ名"
-  },
-  "featureCollapsibleStudio": {
-    "message": "Studioパネルの開閉機能",
-    "description": "Studio開閉機能の名前"
-  },
-  "featureCollapsibleStudioDesc": {
-    "message": "「Studio」パネルに機能ボタンを折りたたむセクションを追加します。",
-    "description": "Studio開閉機能の説明"
-  },
-  "featureButtonEnhancer": {
-    "message": "Studioボタンの動作改善",
-    "description": "ボタン動作改善機能の名前"
-  },
-  "featureButtonEnhancerDesc": {
-    "message": "「音声解説」や「動画解説」ボタンのクリック動作を、自動生成ではなく編集プロンプトが開くように変更します。",
-    "description": "ボタン動作改善機能の説明"
-  },
-  "featureNblmEnterKey": {
-    "message": "Enterキーの動作変更",
-    "description": "NotebookLMのEnterキー機能の名前"
-  },
-  "featureNblmEnterKeyDesc": {
-    "message": "「Enter」で改行を行い、設定した修飾キー（Shift/Ctrl）+ Enter でプロンプトを送信するように動作を変更します。",
-    "description": "NotebookLMのEnterキー機能の説明"
-  },
-  "settingsSaved": {
-    "message": "設定を保存しました！",
-    "description": "設定保存時の確認メッセージ"
-  },
-  "categoryGemini": {
-    "message": "Gemini 機能",
-    "description": "Geminiのカテゴリ名"
-  },
-  "featureGeminiShortcuts": {
-    "message": "ツールショートカット",
-    "description": "Geminiのツールショートカット機能の名前"
-  },
-  "featureGeminiShortcutsDesc": {
-    "message": "プロンプトバーにDeep ResearchとCanvasのボタンを常時表示します。",
-    "description": "Geminiのツールショートカット機能の説明"
-  },
-  "featureGeminiEnterKey": {
-    "message": "Enterキーの動作変更",
-    "description": "GeminiのEnterキー機能の名前"
-  },
-  "featureGeminiEnterKeyDesc": {
-    "message": "「Enter」で改行を行い、設定した修飾キー（Shift/Ctrl）+ Enter でプロンプトを送信するように動作を変更します。",
-    "description": "GeminiのEnterキー機能の説明"
-  },
-  "featureGeminiLayoutWidth": {
-    "message": "コンテンツ幅のカスタマイズ",
-    "description": "Geminiのコンテンツ幅機能の名前"
-  },
-  "featureGeminiLayoutWidthDesc": {
-    "message": "Geminiのチャット履歴とプロンプトエリアの最大幅をカスタム設定します (760〜5000px)。",
-    "description": "Geminiのコンテンツ幅機能の説明"
-  },
-  "categoryGoogleChat": {
-    "message": "Googleチャット 機能",
-    "description": "Google Chatのカテゴリ名"
-  },
-  "featureChatEnterKey": {
-    "message": "Enterキーの動作変更",
-    "description": "Google ChatのEnterキー機能の名前"
-  },
-  "featureChatEnterKeyDesc": {
-    "message": "「Enter」で改行を行い、設定した修飾キー（Shift/Ctrl）+ Enter でメッセージを送信するように動作を変更します。",
-    "description": "Google ChatのEnterキー機能の説明"
-  },
-  "featureSyncAllSources": {
-    "message": "全ソースの同期",
-    "description": "全ソース同期機能の名前"
-  },
-  "featureSyncAllSourcesBtn": {
-    "message": "全ソースを同期実行",
-    "description": "同期実行ボタンのラベル"
-  },
-  "featureSyncAllSourcesDesc": {
-    "message": "開いているNotebookLMの全ソースを巡回し、更新が必要な場合は同期ボタンを自動で押下します。",
-    "description": "全ソース同期機能の説明"
-  },
-  "syncingProcessTitle": {
-    "message": "🔄 同期処理中...",
-    "description": "同期中のタブタイトル"
-  },
-  "syncingCompleteAlert": {
-    "message": "全ソースの確認・同期が完了しました。",
-    "description": "同期完了時のアラート"
-  },
-  "syncingErrorNoTab": {
-    "message": "NotebookLMのタブが見つかりません。タブを開いた状態で実行してください。",
-    "description": "タブが見つからない場合のエラー"
-  },
-  "syncingErrorScript": {
-    "message": "スクリプトが読み込まれていません。NotebookLMのページをリロードしてください。",
-    "description": "コンテンツスクリプト未ロード時のエラー"
-  },
-  "syncingModalTitle": {
-    "message": "ソースを同期中...",
-    "description": "同期中のモーダルタイトル"
-  },
-  "syncingStatusProcessing": {
-    "message": "処理中: ",
-    "description": "進捗状況のプレフィックス"
-  },
-  "syncingStatusInitializing": {
-    "message": "準備中...",
-    "description": "初期化中のステータス"
-  },
-  "syncingOverlayWarning": {
-    "message": "画面を操作しないでください",
-    "description": "操作ブロック時の警告文"
-  },
-  "syncingResultTitle": {
-    "message": "同期完了",
-    "description": "結果モーダルのタイトル"
-  },
-  "syncingResultHeader": {
-    "message": "以下の $COUNT$ 件のソースを同期しました:",
-    "description": "同期成功件数の表示",
-    "placeholders": {
-      "count": {
-        "content": "$1"
-      }
-    }
-  },
-  "syncingResultNone": {
-    "message": "更新が必要なソースはありませんでした。",
-    "description": "更新なしの場合のメッセージ"
-  },
-  "errorGeneric": {
-    "message": "エラーが発生しました: $DETAILS$",
-    "description": "汎用エラーメッセージ",
-    "placeholders": {
-      "details": {
-        "content": "$1"
-      }
-    }
-  },
-  "errorNoSourcesFound": {
-    "message": "ソースが見つかりません。左サイドバーが表示されているか確認してください。",
-    "description": "ソースが見つからない場合のエラー"
-  },
-  "modalButtonOk": {
-    "message": "OK",
-    "description": "モーダルのOKボタン"
-  }
+	"extensionName": {
+		"message": "Enhancer 4 Google",
+		"description": "拡張機能の名前"
+	},
+	"extensionDescription": {
+		"message": "各種GoogleサービスのUIを改善し、ただでさえ使いやすいGoogleサービスをさらにレベルアップさせます。",
+		"description": "拡張機能の説明"
+	},
+	"featuresLabel": {
+		"message": "各種機能群",
+		"description": "折りたたみ部分のラベル"
+	},
+	"optionsTitle": {
+		"message": "Enhancer 4 Google 設定",
+		"description": "設定ページのタイトル"
+	},
+	"categoryGeneral": {
+		"message": "共通設定",
+		"description": "共通設定のカテゴリ名"
+	},
+	"featureSubmitKeyModifier": {
+		"message": "送信修飾キーの選択",
+		"description": "送信トリガーキー設定の名前"
+	},
+	"featureSubmitKeyModifierDesc": {
+		"message": "「Enterキーの動作変更」機能が有効な場合の、メッセージ送信の修飾キーを選択します。",
+		"description": "送信トリガーキー設定の説明"
+	},
+	"optionKeyShift": {
+		"message": "Shift + Enter",
+		"description": "Shiftキーの選択肢"
+	},
+	"optionKeyCtrl": {
+		"message": "Ctrl + Enter",
+		"description": "Ctrlキーの選択肢"
+	},
+	"optionKeyCommand": {
+		"message": "Command + Enter",
+		"description": "Mac用のCommandキーの選択肢"
+	},
+	"categoryNotebookLM": {
+		"message": "NotebookLM 機能",
+		"description": "NotebookLMのカテゴリ名"
+	},
+	"featureCollapsibleStudio": {
+		"message": "Studioパネルの開閉機能",
+		"description": "Studio開閉機能の名前"
+	},
+	"featureCollapsibleStudioDesc": {
+		"message": "「Studio」パネルに機能ボタンを折りたたむセクションを追加します。",
+		"description": "Studio開閉機能の説明"
+	},
+	"featureButtonEnhancer": {
+		"message": "Studioボタンの動作改善",
+		"description": "ボタン動作改善機能の名前"
+	},
+	"featureButtonEnhancerDesc": {
+		"message": "「音声解説」や「動画解説」ボタンのクリック動作を、自動生成ではなく編集プロンプトが開くように変更します。",
+		"description": "ボタン動作改善機能の説明"
+	},
+	"featureNblmEnterKey": {
+		"message": "Enterキーの動作変更",
+		"description": "NotebookLMのEnterキー機能の名前"
+	},
+	"featureNblmEnterKeyDesc": {
+		"message": "「Enter」で改行を行い、設定した修飾キー（Shift/Ctrl）+ Enter でプロンプトを送信するように動作を変更します。",
+		"description": "NotebookLMのEnterキー機能の説明"
+	},
+	"manualSyncLabel": {
+		"message": "全ソース同期",
+		"description": "同期機能のラベル"
+	},
+	"manualSyncDesc": {
+		"message": "現在開いているNotebookLMのタブに対して、即座に全ソース同期を実行します。",
+		"description": "手動同期機能の説明"
+	},
+	"manualSyncBtn": {
+		"message": "今すぐ同期を実行",
+		"description": "手動同期実行ボタン"
+	},
+	"featureScheduleSync": {
+		"message": "同期スケジューラー",
+		"description": "NotebookLMスケジューラー機能の名前"
+	},
+	"featureScheduleSyncDesc": {
+		"message": "指定したNotebookのURLを指定の間隔で自動的に開き、全ソース同期を実行します。（最大10件）",
+		"description": "NotebookLMスケジューラー機能の説明"
+	},
+	"schedulerUrlPlaceholder": {
+		"message": "NotebookのURL (https://notebooklm.google.com/...)",
+		"description": "URL入力欄のプレースホルダー"
+	},
+	"schedulerFreqHourly": {
+		"message": "1時間ごと"
+	},
+	"schedulerFreqDaily": {
+		"message": "毎日"
+	},
+	"schedulerFreqWeekly": {
+		"message": "毎週"
+	},
+	"schedulerFreqMonthly": {
+		"message": "毎月"
+	},
+	"schedulerLabelTime": {
+		"message": "時間:"
+	},
+	"schedulerLabelDayOfWeek": {
+		"message": "曜日:"
+	},
+	"schedulerLabelDayOfMonth": {
+		"message": "日付:"
+	},
+	"schedulerOptionLastDay": {
+		"message": "月末"
+	},
+	"daySun": {
+		"message": "日曜日"
+	},
+	"dayMon": {
+		"message": "月曜日"
+	},
+	"dayTue": {
+		"message": "火曜日"
+	},
+	"dayWed": {
+		"message": "水曜日"
+	},
+	"dayThu": {
+		"message": "木曜日"
+	},
+	"dayFri": {
+		"message": "金曜日"
+	},
+	"daySat": {
+		"message": "土曜日"
+	},
+	"descHourly": {
+		"message": "毎時実行"
+	},
+	"descDaily": {
+		"message": "毎日 $TIME$ に実行",
+		"placeholders": {
+			"time": {
+				"content": "$1"
+			}
+		}
+	},
+	"descWeekly": {
+		"message": "毎週 $DAY$ の $TIME$ に実行",
+		"placeholders": {
+			"day": {
+				"content": "$1"
+			},
+			"time": {
+				"content": "$2"
+			}
+		}
+	},
+	"descMonthly": {
+		"message": "毎月 $DATE$日の $TIME$ に実行",
+		"placeholders": {
+			"date": {
+				"content": "$1"
+			},
+			"time": {
+				"content": "$2"
+			}
+		}
+	},
+	"descMonthlyLast": {
+		"message": "毎月 月末の $TIME$ に実行",
+		"placeholders": {
+			"time": {
+				"content": "$1"
+			}
+		}
+	},
+	"schedulerAddBtn": {
+		"message": "追加"
+	},
+	"schedulerBtnEdit": {
+		"message": "編集"
+	},
+	"schedulerBtnUpdate": {
+		"message": "更新"
+	},
+	"schedulerListHeader": {
+		"message": "登録済みのタスク"
+	},
+	"schedulerNoTasks": {
+		"message": "タスクは登録されていません"
+	},
+	"schedulerDelete": {
+		"message": "削除"
+	},
+	"schedulerAutoClose": {
+		"message": "完了後に閉じる"
+	},
+	"schedulerAutoCloseShort": {
+		"message": "自動クローズ"
+	},
+	"settingsSaved": {
+		"message": "設定を保存しました！",
+		"description": "設定保存時の確認メッセージ"
+	},
+	"categoryGemini": {
+		"message": "Gemini 機能",
+		"description": "Geminiのカテゴリ名"
+	},
+	"featureGeminiShortcuts": {
+		"message": "ツールショートカット",
+		"description": "Geminiのツールショートカット機能の名前"
+	},
+	"featureGeminiShortcutsDesc": {
+		"message": "プロンプトバーにDeep ResearchとCanvasのボタンを常時表示します。",
+		"description": "Geminiのツールショートカット機能の説明"
+	},
+	"featureGeminiEnterKey": {
+		"message": "Enterキーの動作変更",
+		"description": "GeminiのEnterキー機能の名前"
+	},
+	"featureGeminiEnterKeyDesc": {
+		"message": "「Enter」で改行を行い、設定した修飾キー（Shift/Ctrl）+ Enter でプロンプトを送信するように動作を変更します。",
+		"description": "GeminiのEnterキー機能の説明"
+	},
+	"featureGeminiLayoutWidth": {
+		"message": "コンテンツ幅のカスタマイズ",
+		"description": "Geminiのコンテンツ幅機能の名前"
+	},
+	"featureGeminiLayoutWidthDesc": {
+		"message": "Geminiのチャット履歴とプロンプトエリアの最大幅をカスタム設定します (760〜5000px)。",
+		"description": "Geminiのコンテンツ幅機能の説明"
+	},
+	"optionGemManagerSearch": {
+		"message": "Gemマネージャーに検索機能を追加する"
+	},
+	"optionGemManagerSearchDesc": {
+		"message": "Gemマネージャーページに検索バーを追加します。"
+	},
+	"categoryGoogleChat": {
+		"message": "Googleチャット 機能",
+		"description": "Google Chatのカテゴリ名"
+	},
+	"featureChatEnterKey": {
+		"message": "Enterキーの動作変更",
+		"description": "Google ChatのEnterキー機能の名前"
+	},
+	"featureChatEnterKeyDesc": {
+		"message": "「Enter」で改行を行い、設定した修飾キー（Shift/Ctrl）+ Enter でメッセージを送信するように動作を変更します。",
+		"description": "Google ChatのEnterキー機能の説明"
+	},
+	"featureSyncAllSources": {
+		"message": "全ソースの同期",
+		"description": "全ソース同期機能の名前"
+	},
+	"featureSyncAllSourcesBtn": {
+		"message": "全ソースを同期実行",
+		"description": "同期実行ボタンのラベル"
+	},
+	"featureSyncAllSourcesDesc": {
+		"message": "開いているNotebookLMの全ソースを巡回し、更新が必要な場合は同期ボタンを自動で押下します。",
+		"description": "全ソース同期機能の説明"
+	},
+	"syncingProcessTitle": {
+		"message": "🔄 同期処理中...",
+		"description": "同期中のタブタイトル"
+	},
+	"syncingCompleteAlert": {
+		"message": "全ソースの確認・同期が完了しました。",
+		"description": "同期完了時のアラート"
+	},
+	"syncingErrorNoTab": {
+		"message": "NotebookLMのタブが見つかりません。タブを開いた状態で実行してください。",
+		"description": "タブが見つからない場合のエラー"
+	},
+	"syncingErrorScript": {
+		"message": "スクリプトが読み込まれていません。NotebookLMのページをリロードしてください。",
+		"description": "コンテンツスクリプト未ロード時のエラー"
+	},
+	"syncingModalTitle": {
+		"message": "ソースを同期中...",
+		"description": "同期中のモーダルタイトル"
+	},
+	"syncingStatusProcessing": {
+		"message": "処理中: ",
+		"description": "進捗状況のプレフィックス"
+	},
+	"syncingStatusInitializing": {
+		"message": "準備中...",
+		"description": "初期化中のステータス"
+	},
+	"syncingOverlayWarning": {
+		"message": "画面を操作しないでください",
+		"description": "操作ブロック時の警告文"
+	},
+	"syncingResultTitle": {
+		"message": "同期完了",
+		"description": "結果モーダルのタイトル"
+	},
+	"syncingResultHeader": {
+		"message": "以下の $COUNT$ 件のソースを同期しました:",
+		"description": "同期成功件数の表示",
+		"placeholders": {
+			"count": {
+				"content": "$1"
+			}
+		}
+	},
+	"syncingResultNone": {
+		"message": "更新が必要なソースはありませんでした。",
+		"description": "更新なしの場合のメッセージ"
+	},
+	"errorGeneric": {
+		"message": "エラーが発生しました: $DETAILS$",
+		"description": "汎用エラーメッセージ",
+		"placeholders": {
+			"details": {
+				"content": "$1"
+			}
+		}
+	},
+	"errorNoSourcesFound": {
+		"message": "ソースが見つかりません。左サイドバーが表示されているか確認してください。",
+		"description": "ソースが見つからない場合のエラー"
+	},
+	"modalButtonOk": {
+		"message": "OK",
+		"description": "モーダルのOKボタン"
+	},
+	"categorySlides": {
+		"message": "Googleスライド 機能",
+		"description": "Google Slides category name"
+	},
+	"errorGasUrlNotSet": {
+		"message": "GASのURLが設定されていません。オプション画面で設定してください。"
+	},
+	"alertConfigTitle": {
+		"message": "設定エラー"
+	},
+	"alertGasUrlEmpty": {
+		"message": "GAS WebアプリのURLが設定されていません。\n拡張機能のオプション画面を開き、「Slides」タブでURLを入力してください。"
+	},
+	"alertErrorTitle": {
+		"message": "エラー"
+	},
+	"alertExecutionFailed": {
+		"message": "処理に失敗しました。\nGASのURLが正しいか、またはデプロイ設定（アクセス権限: 全員）が正しいか確認してください。\n\n詳細: $1"
+	},
+	"featureSlidesPdfImport": {
+		"message": "PDF取込・画像ZIPダウンロード",
+		"description": "Feature name for Slides PDF import"
+	},
+	"featureSlidesPdfImportDesc": {
+		"message": "スライドのメニューバーにPDFを取り込み、スライド生成と画像ZIPダウンロードを行うボタンを追加します。",
+		"description": "Description for Slides PDF import"
+	},
+	"gasSetupGuide": {
+		"message": "GASの構築方法はこちら (GitHub)"
+	},
+	"slidesBtnLabel": {
+		"message": "PDF取込",
+		"description": "Label for the injected button in Slides"
+	},
+	"slidesModalTitle": {
+		"message": "PDFからスライド作成 & ZIP保存",
+		"description": "Title for the modal"
+	},
+	"slidesDropText": {
+		"message": "ここにPDFをドロップ、またはクリックして選択",
+		"description": "File input placeholder"
+	},
+	"slidesRunBtn": {
+		"message": "実行",
+		"description": "Run button label"
+	},
+	"slidesStatusProcessing": {
+		"message": "処理中: $PAGE$ / $TOTAL$ ページ",
+		"placeholders": {
+			"page": {
+				"content": "$1"
+			},
+			"total": {
+				"content": "$2"
+			}
+		}
+	},
+	"slidesStatusZip": {
+		"message": "スライド作成完了。ZIPを作成中...",
+		"description": "Status when zipping"
+	},
+	"slidesStatusComplete": {
+		"message": "すべて完了しました！",
+		"description": "Status when complete"
+	},
+	"modalStatusProcessing": {
+		"message": "処理中..."
+	},
+	"modalHintCancel": {
+		"message": "Escキーでキャンセル"
+	},
+	"statusSelectPdf": {
+		"message": "PDFファイルを選択してください。"
+	},
+	"statusCancelling": {
+		"message": "キャンセルしています..."
+	},
+	"statusInitializing": {
+		"message": "初期化中..."
+	},
+	"errorSlideIdNotFound": {
+		"message": "スライドIDを取得できませんでした。"
+	},
+	"errorUserCancelled": {
+		"message": "ユーザーによってキャンセルされました。"
+	},
+	"statusStopped": {
+		"message": "停止: "
+	},
+	"errorUrlEmpty": {
+		"message": "URLを入力してください。"
+	},
+	"errorUrlInvalid": {
+		"message": "有効なNotebookLMのURLを入力してください (https://notebooklm.google.com/...)"
+	},
+	"errorMaxTasks": {
+		"message": "登録できるタスクは最大10件までです。"
+	},
+	"errorUrlDuplicate": {
+		"message": "このURLは既に登録されています。設定を変更する場合は一度削除してください。"
+	},
+	"modalTitleError": {
+		"message": "エラー"
+	},
+	"modalTitleNotice": {
+		"message": "お知らせ"
+	},
+	"modalTitleConfirm": {
+		"message": "確認"
+	},
+	"modalBtnClose": {
+		"message": "閉じる"
+	},
+	"modalBtnCancel": {
+		"message": "キャンセル"
+	},
+	"modalBtnDelete": {
+		"message": "削除"
+	},
+	"confirmDeleteTask": {
+		"message": "この同期タスクを削除してもよろしいですか？"
+	},
+	"featureWebCrawler": {
+		"message": "Web Crawler & Source Generator"
+	},
+	"featureWebCrawlerDesc": {
+		"message": "指定したURLとその配下のページをクローリングし、NotebookLMにインポート可能なMarkdown形式で結合・出力します。"
+	},
+	"crawlerUrlLabel": {
+		"message": "ルートURL:"
+	},
+	"crawlerDepthLabel": {
+		"message": "深さ:"
+	},
+	"crawlerMaxPagesLabel": {
+		"message": "最大ページ数:"
+	},
+	"crawlerRunBtn": {
+		"message": "クローリング開始 & .md生成"
+	},
+	"crawlerStatusIdle": {
+		"message": "待機中"
+	},
+	"crawlerStatusRunning": {
+		"message": "実行中: $1 ($2/$3 ページ済み)"
+	},
+	"crawlerStatusComplete": {
+		"message": "完了！ $1 ページを処理し、$2 個のファイルを生成しました。"
+	},
+	"crawlerStatusError": {
+		"message": "エラー: $1"
+	},
+	"crawlerLogStart": {
+		"message": "処理を開始しました..."
+	}
 }

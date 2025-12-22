@@ -5,10 +5,18 @@
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "permissions": [
-    "storage"
+    "storage",
+    "activeTab",
+    "alarms",
+    "downloads"
   ],
+  "background": {
+    "service_worker": "public/js/background.js"
+  },
   "host_permissions": [
-    "https://notebooklm.google.com/*"
+    "https://notebooklm.google.com/*",
+    "https://docs.google.com/presentation/*",
+    "<all_urls>"
   ],
   "action": {
     "default_popup": "public/options.html",
@@ -18,6 +26,15 @@
       "128": "public/image/icon128.png"
     }
   },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "public/js/lib/pdf.worker.min.js",
+        "public/image/icon48.png"
+      ],
+      "matches": ["https://docs.google.com/*"]
+    }
+  ],
   "content_scripts": [
     {
       "matches": [
@@ -47,6 +64,17 @@
       ],
       "run_at": "document_idle",
       "all_frames": true
+    },
+    {
+      "matches": [
+        "https://docs.google.com/presentation/*"
+      ],
+      "js": [
+        "public/js/lib/pdf.min.js",
+        "public/js/lib/jszip.min.js",
+        "public/js/slides-content.js"
+      ],
+      "run_at": "document_idle"
     }
   ],
   "icons": {

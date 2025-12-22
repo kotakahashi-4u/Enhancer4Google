@@ -1,188 +1,487 @@
 {
-  "extensionName": {
-    "message": "Enhancer 4 Google",
-    "description": "The name of the extension."
-  },
-  "extensionDescription": {
-    "message": "Improves the UI of various Google services, taking these already user-friendly services to the next level.",
-    "description": "The description of the extension."
-  },
-  "featuresLabel": {
-    "message": "Features",
-    "description": "The label for the collapsible section."
-  },
-  "optionsTitle": {
-    "message": "Enhancer 4 Google Settings",
-    "description": "Title for the options page."
-  },
-  "categoryGeneral": {
-    "message": "General Settings",
-    "description": "Category name for general settings."
-  },
-  "featureSubmitKeyModifier": {
-    "message": "Submit Modifier Key",
-    "description": "Label for the submit key modifier setting."
-  },
-  "featureSubmitKeyModifierDesc": {
-    "message": "Select the modifier key for sending messages when 'Reverse Enter/Submit' is enabled.",
-    "description": "Description for the submit key modifier setting."
-  },
-  "optionKeyShift": {
-    "message": "Shift + Enter",
-    "description": "Option label for Shift key."
-  },
-  "optionKeyCtrl": {
-    "message": "Ctrl + Enter",
-    "description": "Option label for Ctrl key."
-  },
-  "categoryNotebookLM": {
-    "message": "NotebookLM Features",
-    "description": "Category name for NotebookLM."
-  },
-  "featureCollapsibleStudio": {
-    "message": "Collapsible Studio Panel",
-    "description": "Feature name for collapsible studio."
-  },
-  "featureCollapsibleStudioDesc": {
-    "message": "Adds a collapsible section to the 'Studio' panel to hide the feature buttons.",
-    "description": "Description for collapsible studio."
-  },
-  "featureButtonEnhancer": {
-    "message": "Studio Button Enhancer",
-    "description": "Feature name for button enhancer."
-  },
-  "featureButtonEnhancerDesc": {
-    "message": "Changes the default click action of 'Audio' or 'Video' buttons to open the edit prompt instead of auto-generating.",
-    "description": "Description for button enhancer."
-  },
-  "featureNblmEnterKey": {
-    "message": "Reverse Enter/Submit",
-    "description": "Feature name for NotebookLM Enter key."
-  },
-  "featureNblmEnterKeyDesc": {
-    "message": "Changes 'Enter' to create a new line and uses the configured modifier (Shift/Ctrl) + 'Enter' to submit the prompt.",
-    "description": "Description for NotebookLM Enter key."
-  },
-  "settingsSaved": {
-    "message": "Settings saved!",
-    "description": "Confirmation message when settings are saved."
-  },
-  "categoryGemini": {
-    "message": "Gemini Features",
-    "description": "Category name for Gemini."
-  },
-  "featureGeminiShortcuts": {
-    "message": "Tool Shortcuts",
-    "description": "Feature name for Gemini tool shortcuts."
-  },
-  "featureGeminiShortcutsDesc": {
-    "message": "Show Deep Research and Canvas buttons directly in the prompt bar.",
-    "description": "Description for Gemini tool shortcuts."
-  },
-  "featureGeminiEnterKey": {
-    "message": "Reverse Enter/Submit",
-    "description": "Feature name for Gemini Enter key."
-  },
-  "featureGeminiEnterKeyDesc": {
-    "message": "Changes 'Enter' to create a new line and uses the configured modifier (Shift/Ctrl) + 'Enter' to submit the prompt.",
-    "description": "Description for Gemini Enter key."
-  },
-  "featureGeminiLayoutWidth": {
-    "message": "Custom Content Width",
-    "description": "Feature name for Gemini content width."
-  },
-  "featureGeminiLayoutWidthDesc": {
-    "message": "Set a custom max-width for the chat history and prompt area (760-5000px).",
-    "description": "Description for Gemini content width."
-  },
-  "categoryGoogleChat": {
-    "message": "Google Chat Features",
-    "description": "Category name for Google Chat."
-  },
-  "featureChatEnterKey": {
-    "message": "Reverse Enter/Submit",
-    "description": "Feature name for Google Chat Enter key."
-  },
-  "featureChatEnterKeyDesc": {
-    "message": "Changes 'Enter' to create a new line and uses the configured modifier (Shift/Ctrl) + 'Enter' to send the message.",
-    "description": "Description for Google Chat Enter key."
-  },
-  "featureSyncAllSources": {
-    "message": "Sync All Sources",
-    "description": "Feature name for syncing all sources."
-  },
-  "featureSyncAllSourcesBtn": {
-    "message": "Run Sync",
-    "description": "Label for the sync button."
-  },
-  "featureSyncAllSourcesDesc": {
-    "message": "Cycles through all sources in the open NotebookLM and clicks the sync button if updates are available.",
-    "description": "Description for syncing all sources feature."
-  },
-  "syncingProcessTitle": {
-    "message": "🔄 Syncing...",
-    "description": "Tab title during sync."
-  },
-  "syncingCompleteAlert": {
-    "message": "Check and sync of all sources completed.",
-    "description": "Alert when sync is complete."
-  },
-  "syncingErrorNoTab": {
-    "message": "NotebookLM tab not found. Please open NotebookLM first.",
-    "description": "Error when tab is not found."
-  },
-  "syncingErrorScript": {
-    "message": "Script not loaded. Please reload the NotebookLM page.",
-    "description": "Error when content script is not loaded."
-  },
-  "syncingModalTitle": {
-    "message": "Syncing Sources...",
-    "description": "Modal title during sync"
-  },
-  "syncingStatusProcessing": {
-    "message": "Processing: ",
-    "description": "Prefix for progress status"
-  },
-  "syncingStatusInitializing": {
-    "message": "Initializing...",
-    "description": "Status during initialization"
-  },
-  "syncingOverlayWarning": {
-    "message": "Please do not operate the screen.",
-    "description": "Warning on the overlay"
-  },
-  "syncingResultTitle": {
-    "message": "Sync Complete",
-    "description": "Title of the result modal"
-  },
-  "syncingResultHeader": {
-    "message": "Synced $COUNT$ sources:",
-    "description": "Header for synced sources list",
-    "placeholders": {
-      "count": {
-        "content": "$1"
-      }
-    }
-  },
-  "syncingResultNone": {
-    "message": "No sources needed updating.",
-    "description": "Message when no sources were updated"
-  },
-  "errorGeneric": {
-    "message": "Error occurred: $DETAILS$",
-    "description": "Generic error message",
-    "placeholders": {
-      "details": {
-        "content": "$1"
-      }
-    }
-  },
-  "errorNoSourcesFound": {
-    "message": "No sources found. Please ensure the left sidebar is visible.",
-    "description": "Error when no sources are found"
-  },
-  "modalButtonOk": {
-    "message": "OK",
-    "description": "OK button text"
-  }
+	"extensionName": {
+		"message": "Enhancer 4 Google",
+		"description": "The name of the extension."
+	},
+	"extensionDescription": {
+		"message": "Improves the UI of various Google services, taking these already user-friendly services to the next level.",
+		"description": "The description of the extension."
+	},
+	"featuresLabel": {
+		"message": "Features",
+		"description": "The label for the collapsible section."
+	},
+	"optionsTitle": {
+		"message": "Enhancer 4 Google Settings",
+		"description": "Title for the options page."
+	},
+	"categoryGeneral": {
+		"message": "General Settings",
+		"description": "Category name for general settings."
+	},
+	"featureSubmitKeyModifier": {
+		"message": "Submit Modifier Key",
+		"description": "Label for the submit key modifier setting."
+	},
+	"featureSubmitKeyModifierDesc": {
+		"message": "Select the modifier key for sending messages when 'Reverse Enter/Submit' is enabled.",
+		"description": "Description for the submit key modifier setting."
+	},
+	"optionKeyShift": {
+		"message": "Shift + Enter",
+		"description": "Option label for Shift key."
+	},
+	"optionKeyCtrl": {
+		"message": "Ctrl + Enter",
+		"description": "Option label for Ctrl key."
+	},
+	"optionKeyCommand": {
+		"message": "Command + Enter",
+		"description": "Option label for Command key on Mac."
+	},
+	"categoryNotebookLM": {
+		"message": "NotebookLM Features",
+		"description": "Category name for NotebookLM."
+	},
+	"featureCollapsibleStudio": {
+		"message": "Collapsible Studio Panel",
+		"description": "Feature name for collapsible studio."
+	},
+	"featureCollapsibleStudioDesc": {
+		"message": "Adds a collapsible section to the 'Studio' panel to hide the feature buttons.",
+		"description": "Description for collapsible studio."
+	},
+	"featureButtonEnhancer": {
+		"message": "Studio Button Enhancer",
+		"description": "Feature name for button enhancer."
+	},
+	"featureButtonEnhancerDesc": {
+		"message": "Changes the default click action of 'Audio' or 'Video' buttons to open the edit prompt instead of auto-generating.",
+		"description": "Description for button enhancer."
+	},
+	"featureNblmEnterKey": {
+		"message": "Reverse Enter/Submit",
+		"description": "Feature name for NotebookLM Enter key."
+	},
+	"featureNblmEnterKeyDesc": {
+		"message": "Changes 'Enter' to create a new line and uses the configured modifier (Shift/Ctrl) + 'Enter' to submit the prompt.",
+		"description": "Description for NotebookLM Enter key."
+	},
+	"manualSyncLabel": {
+		"message": "Sync",
+		"description": "Label for sync feature"
+	},
+	"manualSyncDesc": {
+		"message": "Immediately runs a full source sync on the currently open NotebookLM tab.",
+		"description": "Description for manual sync feature"
+	},
+	"manualSyncBtn": {
+		"message": "Run Sync Now",
+		"description": "Button label for manual sync"
+	},
+	"featureScheduleSync": {
+		"message": "Sync Scheduler",
+		"description": "NotebookLM scheduler title"
+	},
+	"featureScheduleSyncDesc": {
+		"message": "Automatically opens and syncs specified Notebook URLs at set intervals. (Max 10 items)",
+		"description": "NotebookLM scheduler description"
+	},
+	"schedulerUrlPlaceholder": {
+		"message": "Notebook URL (https://notebooklm.google.com/...)",
+		"description": "Placeholder for URL input"
+	},
+	"schedulerFreqHourly": {
+		"message": "Hourly"
+	},
+	"schedulerFreqDaily": {
+		"message": "Daily"
+	},
+	"schedulerFreqWeekly": {
+		"message": "Weekly"
+	},
+	"schedulerFreqMonthly": {
+		"message": "Monthly"
+	},
+	"schedulerLabelTime": {
+		"message": "Time:"
+	},
+	"schedulerLabelDayOfWeek": {
+		"message": "Day:"
+	},
+	"schedulerLabelDayOfMonth": {
+		"message": "Date:"
+	},
+	"schedulerOptionLastDay": {
+		"message": "Last Day"
+	},
+	"daySun": {
+		"message": "Sunday"
+	},
+	"dayMon": {
+		"message": "Monday"
+	},
+	"dayTue": {
+		"message": "Tuesday"
+	},
+	"dayWed": {
+		"message": "Wednesday"
+	},
+	"dayThu": {
+		"message": "Thursday"
+	},
+	"dayFri": {
+		"message": "Friday"
+	},
+	"daySat": {
+		"message": "Saturday"
+	},
+	"descHourly": {
+		"message": "Runs every hour"
+	},
+	"descDaily": {
+		"message": "Runs daily at $TIME$",
+		"placeholders": {
+			"time": {
+				"content": "$1"
+			}
+		}
+	},
+	"descWeekly": {
+		"message": "Runs every $DAY$ at $TIME$",
+		"placeholders": {
+			"day": {
+				"content": "$1"
+			},
+			"time": {
+				"content": "$2"
+			}
+		}
+	},
+	"descMonthly": {
+		"message": "Runs on day $DATE$ of every month at $TIME$",
+		"placeholders": {
+			"date": {
+				"content": "$1"
+			},
+			"time": {
+				"content": "$2"
+			}
+		}
+	},
+	"descMonthlyLast": {
+		"message": "Runs on the last day of every month at $TIME$",
+		"placeholders": {
+			"time": {
+				"content": "$1"
+			}
+		}
+	},
+	"schedulerAddBtn": {
+		"message": "Add"
+	},
+	"schedulerBtnEdit": {
+		"message": "Edit"
+	},
+	"schedulerBtnUpdate": {
+		"message": "Update"
+	},
+	"schedulerListHeader": {
+		"message": "Scheduled Tasks"
+	},
+	"schedulerNoTasks": {
+		"message": "No tasks scheduled"
+	},
+	"schedulerDelete": {
+		"message": "Delete"
+	},
+	"schedulerAutoClose": {
+		"message": "Auto-close tab"
+	},
+	"schedulerAutoCloseShort": {
+		"message": "Auto-close"
+	},
+	"settingsSaved": {
+		"message": "Settings saved!",
+		"description": "Confirmation message when settings are saved."
+	},
+	"categoryGemini": {
+		"message": "Gemini Features",
+		"description": "Category name for Gemini."
+	},
+	"featureGeminiShortcuts": {
+		"message": "Tool Shortcuts",
+		"description": "Feature name for Gemini tool shortcuts."
+	},
+	"featureGeminiShortcutsDesc": {
+		"message": "Show Deep Research and Canvas buttons directly in the prompt bar.",
+		"description": "Description for Gemini tool shortcuts."
+	},
+	"featureGeminiEnterKey": {
+		"message": "Reverse Enter/Submit",
+		"description": "Feature name for Gemini Enter key."
+	},
+	"featureGeminiEnterKeyDesc": {
+		"message": "Changes 'Enter' to create a new line and uses the configured modifier (Shift/Ctrl) + 'Enter' to submit the prompt.",
+		"description": "Description for Gemini Enter key."
+	},
+	"featureGeminiLayoutWidth": {
+		"message": "Custom Content Width",
+		"description": "Feature name for Gemini content width."
+	},
+	"featureGeminiLayoutWidthDesc": {
+		"message": "Set a custom max-width for the chat history and prompt area (760-5000px).",
+		"description": "Description for Gemini content width."
+	},
+	"optionGemManagerSearch": {
+		"message": "Add search function to Gem Manager"
+	},
+	"optionGemManagerSearchDesc": {
+		"message": "Adds a search bar to the Gem Manager page."
+	},
+	"categoryGoogleChat": {
+		"message": "Google Chat Features",
+		"description": "Category name for Google Chat."
+	},
+	"featureChatEnterKey": {
+		"message": "Reverse Enter/Submit",
+		"description": "Feature name for Google Chat Enter key."
+	},
+	"featureChatEnterKeyDesc": {
+		"message": "Changes 'Enter' to create a new line and uses the configured modifier (Shift/Ctrl) + 'Enter' to send the message.",
+		"description": "Description for Google Chat Enter key."
+	},
+	"featureSyncAllSources": {
+		"message": "Sync All Sources",
+		"description": "Feature name for syncing all sources."
+	},
+	"featureSyncAllSourcesBtn": {
+		"message": "Run Sync",
+		"description": "Label for the sync button."
+	},
+	"featureSyncAllSourcesDesc": {
+		"message": "Cycles through all sources in the open NotebookLM and clicks the sync button if updates are available.",
+		"description": "Description for syncing all sources feature."
+	},
+	"syncingProcessTitle": {
+		"message": "🔄 Syncing...",
+		"description": "Tab title during sync."
+	},
+	"syncingCompleteAlert": {
+		"message": "Check and sync of all sources completed.",
+		"description": "Alert when sync is complete."
+	},
+	"syncingErrorNoTab": {
+		"message": "NotebookLM tab not found. Please open NotebookLM first.",
+		"description": "Error when tab is not found."
+	},
+	"syncingErrorScript": {
+		"message": "Script not loaded. Please reload the NotebookLM page.",
+		"description": "Error when content script is not loaded."
+	},
+	"syncingModalTitle": {
+		"message": "Syncing Sources...",
+		"description": "Modal title during sync"
+	},
+	"syncingStatusProcessing": {
+		"message": "Processing: ",
+		"description": "Prefix for progress status"
+	},
+	"syncingStatusInitializing": {
+		"message": "Initializing...",
+		"description": "Status during initialization"
+	},
+	"syncingOverlayWarning": {
+		"message": "Please do not operate the screen.",
+		"description": "Warning on the overlay"
+	},
+	"syncingResultTitle": {
+		"message": "Sync Complete",
+		"description": "Title of the result modal"
+	},
+	"syncingResultHeader": {
+		"message": "Synced $COUNT$ sources:",
+		"description": "Header for synced sources list",
+		"placeholders": {
+			"count": {
+				"content": "$1"
+			}
+		}
+	},
+	"syncingResultNone": {
+		"message": "No sources needed updating.",
+		"description": "Message when no sources were updated"
+	},
+	"errorGeneric": {
+		"message": "Error occurred: $DETAILS$",
+		"description": "Generic error message",
+		"placeholders": {
+			"details": {
+				"content": "$1"
+			}
+		}
+	},
+	"errorNoSourcesFound": {
+		"message": "No sources found. Please ensure the left sidebar is visible.",
+		"description": "Error when no sources are found"
+	},
+	"modalButtonOk": {
+		"message": "OK",
+		"description": "OK button text"
+	},
+	"categorySlides": {
+		"message": "Google Slides Features",
+		"description": "Google Slides category name"
+	},
+	"errorGasUrlNotSet": {
+		"message": "GAS URL is not set. Please configure it in the options."
+	},
+	"alertConfigTitle": {
+		"message": "Configuration Error"
+	},
+	"alertGasUrlEmpty": {
+		"message": "GAS Web App URL is not set.\nPlease open the extension options, go to the 'Slides' tab, and enter the URL."
+	},
+	"alertErrorTitle": {
+		"message": "Error"
+	},
+	"alertExecutionFailed": {
+		"message": "Processing failed.\nPlease check if the GAS URL is correct and the deployment settings (Access: Anyone) are correct.\n\nDetails: $1"
+	},
+	"featureSlidesPdfImport": {
+		"message": "PDF Import & Image ZIP",
+		"description": "Feature name for Slides PDF import"
+	},
+	"featureSlidesPdfImportDesc": {
+		"message": "Adds a button to the Slides menu bar to import PDF, generate slides, and download image ZIPs.",
+		"description": "Description for Slides PDF import"
+	},
+	"gasSetupGuide": {
+		"message": "How to setup GAS (GitHub)"
+	},
+	"slidesBtnLabel": {
+		"message": "Import PDF",
+		"description": "Label for the injected button in Slides"
+	},
+	"slidesModalTitle": {
+		"message": "Create Slides from PDF & Save ZIP",
+		"description": "Title for the modal"
+	},
+	"slidesDropText": {
+		"message": "Drop PDF here or click to select",
+		"description": "File input placeholder"
+	},
+	"slidesRunBtn": {
+		"message": "Run",
+		"description": "Run button label"
+	},
+	"slidesStatusProcessing": {
+		"message": "Processing: $PAGE$ / $TOTAL$ pages",
+		"placeholders": {
+			"page": {
+				"content": "$1"
+			},
+			"total": {
+				"content": "$2"
+			}
+		}
+	},
+	"slidesStatusZip": {
+		"message": "Slides created. Generating ZIP...",
+		"description": "Status when zipping"
+	},
+	"slidesStatusComplete": {
+		"message": "All done!",
+		"description": "Status when complete"
+	},
+	"modalStatusProcessing": {
+		"message": "Processing..."
+	},
+	"modalHintCancel": {
+		"message": "Press Esc to cancel"
+	},
+	"statusSelectPdf": {
+		"message": "Please select a PDF file."
+	},
+	"statusCancelling": {
+		"message": "Cancelling..."
+	},
+	"statusInitializing": {
+		"message": "Initializing..."
+	},
+	"errorSlideIdNotFound": {
+		"message": "Could not get Slide ID."
+	},
+	"errorUserCancelled": {
+		"message": "Cancelled by user."
+	},
+	"statusStopped": {
+		"message": "Stopped: "
+	},
+	"errorUrlEmpty": {
+		"message": "Please enter a URL."
+	},
+	"errorUrlInvalid": {
+		"message": "Please enter a valid NotebookLM URL (https://notebooklm.google.com/...)"
+	},
+	"errorMaxTasks": {
+		"message": "You can register up to 10 tasks."
+	},
+	"errorUrlDuplicate": {
+		"message": "This URL is already registered. Please delete it first to change settings."
+	},
+	"modalTitleError": {
+		"message": "Error"
+	},
+	"modalTitleNotice": {
+		"message": "Notice"
+	},
+	"modalTitleConfirm": {
+		"message": "Confirm"
+	},
+	"modalBtnClose": {
+		"message": "Close"
+	},
+	"modalBtnCancel": {
+		"message": "Cancel"
+	},
+	"modalBtnDelete": {
+		"message": "Delete"
+	},
+	"confirmDeleteTask": {
+		"message": "Are you sure you want to delete this sync task?"
+	},
+	"featureWebCrawler": {
+		"message": "Web Crawler & Source Generator"
+	},
+	"featureWebCrawlerDesc": {
+		"message": "Crawls the specified URL and its sub-pages, merging them into NotebookLM-compatible Markdown files."
+	},
+	"crawlerUrlLabel": {
+		"message": "Root URL:"
+	},
+	"crawlerDepthLabel": {
+		"message": "Depth:"
+	},
+	"crawlerMaxPagesLabel": {
+		"message": "Max Pages:"
+	},
+	"crawlerRunBtn": {
+		"message": "Start Crawling & Export .md"
+	},
+	"crawlerStatusIdle": {
+		"message": "Idle"
+	},
+	"crawlerStatusRunning": {
+		"message": "Running: $1 ($2/$3 pages)"
+	},
+	"crawlerStatusComplete": {
+		"message": "Done! Processed $1 pages and generated $2 files."
+	},
+	"crawlerStatusError": {
+		"message": "Error: $1"
+	},
+	"crawlerLogStart": {
+		"message": "Process started..."
+	}
 }

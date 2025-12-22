@@ -1,22 +1,20 @@
 /**
  * @file Enhancer 4 Google - Gemini Content Script
- * Gemini (gemini.google.com) のUIを改善する機能を提供します。
- * - ツールショートカット (DeepResearch, Canvas) のプロンプトバーへの追加
- * - Enterキーの動作変更 (Enterで改行、Shift+Enterで送信)
- * - コンテンツ幅のカスタマイズ機能
+ * @description GeminiのUI改善（ショートカット、Enterキー、幅調整、Gem検索）を行うコンテンツスクリプトです。
  */
 
-// --- 設定管理 ---
+// 設定値
 let settings = {
   geminiToolShortcuts: true,
   geminiEnterKey: true,
   geminiLayoutWidthEnabled: false,
   geminiLayoutWidthValue: 1200,
-  submitKeyModifier: 'shift'
+  submitKeyModifier: 'shift',
+  enableGemManagerSearch: true
 };
 
 /**
- * 拡張機能の設定を chrome.storage.sync から読み込み、グローバル変数 `settings` に格納します。
+ * 設定の読み込みと適用
  */
 function loadSettings() {
   chrome.storage.sync.get({
@@ -24,62 +22,63 @@ function loadSettings() {
     geminiEnterKey: true,
     geminiLayoutWidthEnabled: false,
     geminiLayoutWidthValue: 1200,
-    submitKeyModifier: 'shift'
+    submitKeyModifier: 'shift',
+    enableGemManagerSearch: true
   }, (items) => {
     settings = items;
-    // 読み込み完了時にカスタム幅を適用
     applyCustomContentWidth();
+    // 初回ロード時にGemマネージャー画面なら検索バーを表示
+    if (settings.enableGemManagerSearch) {
+      initGemManagerSearch();
+    }
   });
 }
 
 /**
- * chrome.storage の変更を監視し、設定が変更された場合に動的に機能をON/OFFします。
+ * 設定変更監視とリアルタイム反映
  */
 chrome.storage.onChanged.addListener((changes, namespace) => {
   if (namespace !== 'sync') return;
-  let settingsChanged = false;
   
-  // ツールショートカットのON/OFF
   if (changes.geminiToolShortcuts) {
     settings.geminiToolShortcuts = changes.geminiToolShortcuts.newValue;
-    if (settings.geminiToolShortcuts === false) {
-      removeToolShortcuts(); // OFFになった場合は即時削除
-    }
-    settingsChanged = true;
+    if (settings.geminiToolShortcuts === false) removeToolShortcuts();
   }
   
-  // Enterキーの動作変更のON/OFF
   if (changes.geminiEnterKey) {
     settings.geminiEnterKey = changes.geminiEnterKey.newValue;
     if (settings.geminiEnterKey === false) {
-      // OFFになった場合は、アタッチされている全てのリスナーを即時解除
       document.querySelectorAll('[data-enter-hijacked="true"]').forEach(removeEnterKeyHijack);
     }
-    settingsChanged = true;
   }
   
-  // カスタム幅設定の変更
   if (changes.geminiLayoutWidthEnabled || changes.geminiLayoutWidthValue) {
-    if (changes.geminiLayoutWidthEnabled) {
-        settings.geminiLayoutWidthEnabled = changes.geminiLayoutWidthEnabled.newValue;
+    if (changes.geminiLayoutWidthEnabled) settings.geminiLayoutWidthEnabled = changes.geminiLayoutWidthEnabled.newValue;
+    if (changes.geminiLayoutWidthValue) settings.geminiLayoutWidthValue = changes.geminiLayoutWidthValue.newValue;
+    applyCustomContentWidth();
+  }
+
+  if (changes.enableGemManagerSearch) {
+    settings.enableGemManagerSearch = changes.enableGemManagerSearch.newValue;
+    if (settings.enableGemManagerSearch) {
+      initGemManagerSearch();
+    } else {
+      // OFF時は検索ボックスを削除
+      const searchBox = document.getElementById('enhancer-gem-manager-search');
+      if (searchBox) searchBox.parentElement.remove();
+      updateSectionVisibility();
     }
-    if (changes.geminiLayoutWidthValue) {
-        settings.geminiLayoutWidthValue = changes.geminiLayoutWidthValue.newValue;
-    }
-    settingsChanged = true;
-    applyCustomContentWidth(); // 即時スタイルを更新
   }
 });
 
-// 初期ロード
 loadSettings();
 
-// --- DOMセレクタ ---
+// --- 定数・セレクタ定義 ---
 const PROMPT_AREA_SELECTOR = 'input-area-v2';
 const TEXT_AREA_SELECTOR = 'rich-textarea .ql-editor[contenteditable="true"]';
 const EDIT_TEXT_AREA_SELECTOR = 'textarea[cdktextareaautosize][enterkeyhint="send"]';
-const INJECTION_TARGET_SELECTOR = '.leading-actions-wrapper'; // ★ /app/ と /gem/ の両方に存在する注入ラッパー
-const TOOL_MENU_SELECTOR = 'mat-card.toolbox-drawer-card'; // ツールポップアップメニュー
+const INJECTION_TARGET_SELECTOR = '.leading-actions-wrapper';
+const TOOL_MENU_SELECTOR = 'mat-card.toolbox-drawer-card';
 const SUBMIT_BUTTON_SELECTOR = 'button.send-button.submit:not([disabled])';
 const EDIT_SUBMIT_BUTTON_SELECTOR = 'button.update-button:not([disabled])';
 const PROMPT_CONTAINER_SELECTOR = '.input-area-container';
@@ -89,112 +88,71 @@ const HISTORY_MODEL_RESPONSE_SELECTOR = 'model-response';
 const USER_BUBBLE_BACKGROUND_SELECTOR = '.user-query-bubble-with-background:not(.edit-mode)';
 const CUSTOM_WIDTH_STYLE_ID = 'gemini-content-width-style';
 
-/**
- * 注入するツールショートカットの定義
- */
 const TOOLS_TO_INJECT = [
-  {
-    id: 'deep-research',
-    label: 'Deep Research',
-    icon: 'travel_explore',
-    iconSelector: 'mat-icon[fonticon="travel_explore"]'
-  },
-  {
-    id: 'canvas',
-    label: 'Canvas',
-    icon: 'note_stack_add',
-    iconSelector: 'mat-icon[fonticon="note_stack_add"]'
-  }
+  { id: 'deep-research', label: 'Deep Research', icon: 'travel_explore', iconSelector: 'mat-icon[fonticon="travel_explore"]' },
+  { id: 'canvas', label: 'Canvas', icon: 'note_stack_add', iconSelector: 'mat-icon[fonticon="note_stack_add"]' }
 ];
 
-// --- 機能1: ツールショートカット ---
+// --- ツールショートカット機能 ---
 
-/**
- * ショートカットボタンクリック時に、対応するツールを起動します。
- * @param {string} toolIconSelector - ツールメニュー内で探すアイコンのセレクタ (例: 'mat-icon[fonticon="travel_explore"]')
- * @param {string} toolIcon - ツール名 (例: 'travel_explore')
- */
 function activateTool(toolIconSelector, toolIcon) {
-  // [ツール]ボタン（非アクティブ状態）を探す
   const inactiveToolButton = document.querySelector('button.toolbox-drawer-button-with-label');
   if (inactiveToolButton) {
-    // ツールが非アクティブな場合: 1. メニューを開く -> 2. 目的のツールをクリック
     inactiveToolButton.click();
     waitForMenuAndClick(toolIconSelector);
   } else {
-    // ツールが既にアクティブな場合 (例: Canvasがアクティブ)
+    // 既に他のツールが開いている場合の切り替え処理
     const activeToolChip = document.querySelector('button.toolbox-drawer-item-deselect-button');
     if (!activeToolChip) return;
     
-    // 既に押したいボタンがアクティブなら何もしない
     const activeIcon = activeToolChip.querySelector(`mat-icon[fonticon="${toolIcon}"]`);
-    if (activeIcon) {
-      return;
-    }
+    if (activeIcon) return; // 既に選択中なら何もしない
     
-    // 別のツールがアクティブな場合: 1. 現在のツールを非アクティブ化 -> 2. メニューが開くのを待つ -> 3. 目的のツールをクリック
-    // ★ テクニカルな箇所: ツールを非アクティブ化すると、[ツール]ボタンがDOMに再挿入される。
-    // その「再挿入」を MutationObserver で監視する。
     const deactivateObserver = new MutationObserver((mutations, obs) => {
       const newInactiveButton = document.querySelector('button.toolbox-drawer-button-with-label');
       if (newInactiveButton) {
-        obs.disconnect(); // 監視終了
-        newInactiveButton.click(); // メニューを開く
-        waitForMenuAndClick(toolIconSelector); // 目的のツールをクリック
+        obs.disconnect();
+        newInactiveButton.click();
+        waitForMenuAndClick(toolIconSelector);
       }
     });
     const toolboxDrawer = document.querySelector('toolbox-drawer');
-    if(toolboxDrawer) {
-        deactivateObserver.observe(toolboxDrawer, { childList: true, subtree: true });
-    }
-    activeToolChip.click(); // 1. 現在のツールを非アクティブ化
+    if(toolboxDrawer) deactivateObserver.observe(toolboxDrawer, { childList: true, subtree: true });
+    activeToolChip.click();
   }
 }
 
-/**
- * ツールメニューのポップアップ (cdk-overlay-pane) が表示されるのを待ち、
- * 目的のツールボタンをクリックします。
- * @param {string} toolIconSelector - クリック対象のツールアイコンのセレクタ
- */
 function waitForMenuAndClick(toolIconSelector) {
-  // ★ テクニカルな箇所: ツールメニューはDOMのルート (body直下) に動的に挿入されるため、
-  // body全体を MutationObserver で監視する。
   const observer = new MutationObserver((mutations, obs) => {
     const toolMenu = document.querySelector(TOOL_MENU_SELECTOR);
     if (toolMenu) {
-      // メニューが見つかった
       const toolIconEl = toolMenu.querySelector(toolIconSelector);
       if (toolIconEl) {
         const toolButton = toolIconEl.closest('button.mat-mdc-list-item');
-        if (toolButton) {
-          toolButton.click(); // 目的のツールをクリック
-        }
+        if (toolButton) toolButton.click();
       }
-      obs.disconnect(); // 監視終了
+      obs.disconnect();
     }
   });
   observer.observe(document.body, { childList: true, subtree: true });
 }
 
-/**
- * ツールショートカットボタンをDOMに挿入します。
- * @param {HTMLElement} targetWrapper - 注入先の親要素 (例: .leading-actions-wrapper)
- * @param {HTMLElement | null} referenceNode - 挿入位置の基準となる要素 (例: toolbox-drawer)
- */
 function injectToolShortcuts(targetWrapper, referenceNode) {
   const fragment = document.createDocumentFragment();
   TOOLS_TO_INJECT.forEach(tool => {
-    // ★ セキュアコーディング: innerHTMLを使わず、createElementとtextContentでDOMを構築
     const button = document.createElement('button');
     button.className = 'mdc-button mat-mdc-button-base mat-unthemed enhancer-shortcut-button';
     button.dataset.toolIcon = tool.icon;
+    
     const icon = document.createElement('mat-icon');
     icon.setAttribute('role', 'img');
     icon.setAttribute('fonticon', tool.icon);
     icon.className = 'mat-icon notranslate gds-icon-l google-symbols mat-ligature-font mat-icon-no-color';
+    
     const label = document.createElement('span');
     label.className = 'mdc-button__label';
     label.textContent = tool.label; 
+    
     button.appendChild(icon);
     button.appendChild(label);
     button.addEventListener('click', (e) => {
@@ -206,103 +164,69 @@ function injectToolShortcuts(targetWrapper, referenceNode) {
   });
   
   if (referenceNode) {
-    // 基準ノード (ツールボタン) の「前」に挿入
     targetWrapper.insertBefore(fragment, referenceNode);
   } else {
-    // 基準ノードがない場合 (ツールボタンが存在しないUI) は末尾に追加
     targetWrapper.appendChild(fragment); 
   }
   injectGeminiStyles();
 }
 
-/**
- * (v1.9.5) 最終ロジック
- * URLと `toolbox-drawer` (ツールボタン) の有無に基づいて、
- * ショートカットボタンの表示/非表示を決定します。
- */
 function updateAllShortcutVisibility() {
   const currentURL = window.location.href;
-  
-  let showDeepResearch = false; // デフォルトは非表示
-  let showCanvas = false;       // デフォルトは非表示
+  let showDeepResearch = false;
+  let showCanvas = false;
 
-  // 仕様1: /gems/edit
+  // URLに応じたボタンの表示制御
   if (currentURL.includes('/gems/edit')) {
     showDeepResearch = false;
     showCanvas = false;
   } else {
-    // 仕様2: /app/ または /gem/
     const toolButton = document.querySelector('toolbox-drawer');
-    
     if (toolButton) {
-      // ツールボタンが「ある」場合
       if (currentURL.includes('/gem/')) {
-        // /gem/ の場合 -> Canvasのみ表示
         showDeepResearch = false;
         showCanvas = true;
       } else {
-        // /app/ (またはその他) の場合 -> 両方表示
         showDeepResearch = true;
         showCanvas = true;
       }
     } else {
-      // ツールボタンが「ない」場合 -> 両方非表示
       showDeepResearch = false;
       showCanvas = false;
     }
   }
 
-  // アクティブなツールが既に選択されているかチェック
   const activeToolChip = document.querySelector('button.toolbox-drawer-item-deselect-button');
   let activeIconName = null;
   if (activeToolChip) {
     const iconEl = activeToolChip.querySelector('mat-icon[fonticon]');
-    if (iconEl) {
-      activeIconName = iconEl.getAttribute('fonticon');
-    }
+    if (iconEl) activeIconName = iconEl.getAttribute('fonticon');
   }
 
-  // 最終的な表示/非表示を決定
   TOOLS_TO_INJECT.forEach(tool => {
     const shortcutButton = document.querySelector(`.enhancer-shortcut-button[data-tool-icon="${tool.icon}"]`);
     if (!shortcutButton) return;
     
-    let isVisible = false; // デフォルトは非表示
-
-    if (tool.id === 'deep-research' && showDeepResearch) {
-      isVisible = true;
-    }
-    if (tool.id === 'canvas' && showCanvas) {
-      isVisible = true;
-    }
-    
-    // ★ アクティブなツール自身のショートカットボタンは非表示にする
-    if (tool.icon === activeIconName) {
-      isVisible = false;
-    }
+    let isVisible = false;
+    if (tool.id === 'deep-research' && showDeepResearch) isVisible = true;
+    if (tool.id === 'canvas' && showCanvas) isVisible = true;
+    if (tool.icon === activeIconName) isVisible = false; // 選択中は非表示
     
     shortcutButton.style.display = isVisible ? 'inline-flex' : 'none';
   });
 }
 
-/**
- * 挿入したツールショートカットボタンをDOMから削除します（機能OFF時）。
- */
 function removeToolShortcuts() {
     document.querySelectorAll('.enhancer-shortcut-button').forEach(button => {
         button.remove();
     });
 }
 
-/**
- * ショートカットボタン用のカスタムCSSを <head> に挿入します。
- */
 function injectGeminiStyles() {
   const STYLE_ID = 'notebooklm-enhancer-gemini-styles';
   if (document.getElementById(STYLE_ID)) return;
   const style = document.createElement('style');
   style.id = STYLE_ID;
-  // ★ コード全量を展開
   style.textContent = `
     .enhancer-shortcut-button {
       display: inline-flex;
@@ -342,65 +266,39 @@ function injectGeminiStyles() {
   document.head.appendChild(style);
 }
 
-// --- 機能2: Enterキーの動作変更 ---
+// --- Enterキー動作変更機能 ---
 
-/**
- * Enterキーのキーダウンイベントハンドラ。
- * @param {KeyboardEvent} event
- */
 const handleKeyDown = (event) => {
-  if (settings.geminiEnterKey === false) {
-    return;
-  }
-  if (event.key !== 'Enter') {
-    return;
-  }
+  if (settings.geminiEnterKey === false) return;
+  if (event.key !== 'Enter') return;
   
-  const isSubmitModifierPressed = settings.submitKeyModifier === 'ctrl' ? event.ctrlKey : event.shiftKey;
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  let isSubmitModifierPressed = false;
+
+  if (settings.submitKeyModifier === 'ctrl') {
+    isSubmitModifierPressed = isMac ? event.metaKey : event.ctrlKey;
+  } else {
+    isSubmitModifierPressed = event.shiftKey;
+  }
 
   if (isSubmitModifierPressed) {
-    // --- Shift + Enter の場合 (送信) ---
-    event.preventDefault(); // デフォルトの改行をキャンセル
-    event.stopImmediatePropagation(); // 他のリスナー（Geminiネイティブ）を止める
-
-    // 編集中の送信ボタンか、通常の送信ボタンかを探す
+    event.preventDefault();
+    event.stopImmediatePropagation();
     let submitButton = document.querySelector(EDIT_SUBMIT_BUTTON_SELECTOR);
-    if (!submitButton) {
-      submitButton = document.querySelector(SUBMIT_BUTTON_SELECTOR);
-    }
-    
-    if (submitButton) {
-      submitButton.click();
-    } else {
-      console.warn('Enhancer4Google (Gemini): Could not find submit or update button.');
-    }
-    
+    if (!submitButton) submitButton = document.querySelector(SUBMIT_BUTTON_SELECTOR);
+    if (submitButton) submitButton.click();
   } else {
-    // --- Enter のみの場合 (改行) ---
-    // ★ テクニカルな箇所: Geminiのリッチテキストエリアは Enter で送信がデフォルト。
-    // ここで stopImmediatePropagation() を呼ぶことで、
-    // Geminiの「送信」リスナーの実行をブロックし、「改行」だけを行う。
+    // 改行を許可 (デフォルト動作) だが、イベント伝播を止めてGeminiの送信ロジックを防ぐ
     event.stopImmediatePropagation(); 
   }
 };
 
-/**
- * 対象のテキストエリアにEnterキーハイジャック用リスナーをアタッチします。
- * @param {HTMLElement} textAreaElement - アタッチ対象のテキストエリア
- */
 function attachEnterKeyHijack(textAreaElement) {
-  if (!textAreaElement || textAreaElement.dataset.enterHijacked === 'true') {
-    return; // 既にアタッチ済み
-  }
-  // ★ キャプチャフェーズ (true) で登録し、Geminiのリスナーより先に実行されるようにする
+  if (!textAreaElement || textAreaElement.dataset.enterHijacked === 'true') return;
   textAreaElement.addEventListener('keydown', handleKeyDown, true);
   textAreaElement.dataset.enterHijacked = 'true';
 }
 
-/**
- * アタッチしたリスナーを解除します（機能OFF時）。
- * @param {HTMLElement} textAreaElement - 解除対象のテキストエリア
- */
 function removeEnterKeyHijack(textAreaElement) {
   if (textAreaElement && textAreaElement.dataset.enterHijacked === 'true') {
     textAreaElement.removeEventListener('keydown', handleKeyDown, true);
@@ -408,39 +306,23 @@ function removeEnterKeyHijack(textAreaElement) {
   }
 }
 
+// --- 幅カスタマイズ機能 ---
 
-// --- 機能3: コンテンツ幅のカスタマイズ ---
-
-/**
- * オプションで設定されたカスタム幅を適用/削除します。
- */
 function applyCustomContentWidth() {
   const styleId = CUSTOM_WIDTH_STYLE_ID;
   let styleTag = document.getElementById(styleId);
 
   if (settings.geminiLayoutWidthEnabled) {
-    // ★ セキュアコーディング: 念のため parseInt で数値を抽出
     const width = parseInt(settings.geminiLayoutWidthValue, 10);
-    
     if (isNaN(width) || width <= 760) {
-      if (styleTag) {
-        styleTag.remove();
-      }
+      if (styleTag) styleTag.remove();
       return;
     }
-    
-    const bubbleWidth = width - 284; 
-
+    const bubbleWidth = width - 284; // サイドパネル等の幅を考慮
     const cssText = `
-      ${PROMPT_CONTAINER_SELECTOR},
-      ${CHAT_HISTORY_CONTAINER_SELECTOR}, 
-      ${HISTORY_USER_QUERY_SELECTOR},
-      ${HISTORY_MODEL_RESPONSE_SELECTOR} {
-        max-width: ${width}px !important;
-      }
-      ${USER_BUBBLE_BACKGROUND_SELECTOR} {
-        max-width: calc(${bubbleWidth}px - var(--gem-sys-spacing--m) * 2) !important;
-      }
+      ${PROMPT_CONTAINER_SELECTOR}, ${CHAT_HISTORY_CONTAINER_SELECTOR}, 
+      ${HISTORY_USER_QUERY_SELECTOR}, ${HISTORY_MODEL_RESPONSE_SELECTOR} { max-width: ${width}px !important; }
+      ${USER_BUBBLE_BACKGROUND_SELECTOR} { max-width: calc(${bubbleWidth}px - var(--gem-sys-spacing--m) * 2) !important; }
     `;
 
     if (!styleTag) {
@@ -448,86 +330,191 @@ function applyCustomContentWidth() {
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-    
-    if (styleTag.textContent !== cssText) {
-      styleTag.textContent = cssText;
-    }
+    if (styleTag.textContent !== cssText) styleTag.textContent = cssText;
 
   } else {
-    // 機能がOFFの場合はスタイルタグを削除
-    if (styleTag) {
-      styleTag.remove();
-    }
+    if (styleTag) styleTag.remove();
   }
 }
 
+// --- Gemマネージャー検索機能 ---
 
-// --- メイン監視ロジック ---
+function initGemManagerSearch() {
+  if (!settings.enableGemManagerSearch) return;
+  if (!location.href.includes('/gems/view')) return;
+  if (document.getElementById('enhancer-gem-manager-search')) return;
+
+  const headerTitle = document.querySelector('h1.gds-headline-m');
+  if (!headerTitle) return;
+
+  const searchContainer = document.createElement('div');
+  searchContainer.style.cssText = `
+    margin: 16px 0 24px 0;
+    position: relative;
+    max-width: 760px;
+  `;
+
+  // 虫眼鏡アイコン (SVG)
+  const iconWrapper = document.createElement('div');
+  iconWrapper.style.cssText = `
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    pointer-events: none;
+  `;
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("height", "24");
+  svg.setAttribute("width", "24");
+  svg.style.fill = "var(--gem-sys-color-on-surface-variant, #444746)";
+  const path = document.createElementNS(svgNS, "path");
+  path.setAttribute("d", "M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z");
+  svg.appendChild(path);
+  iconWrapper.appendChild(svg);
+
+  const searchInput = document.createElement('input');
+  searchInput.id = 'enhancer-gem-manager-search';
+  searchInput.type = 'text';
+  searchInput.placeholder = 'Gem を検索 (名前、説明文)...';
+  searchInput.style.cssText = `
+    width: 100%;
+    height: 48px;
+    padding: 0 16px 0 52px;
+    border-radius: 24px;
+    border: 1px solid var(--gem-sys-color-outline, #747775);
+    background-color: var(--gem-sys-color-surface-container-high, #f0f4f9);
+    color: var(--gem-sys-color-on-surface, #1f1f1f);
+    font-family: "Google Sans", Roboto, sans-serif;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.2s ease;
+  `;
+
+  // フォーカス時のスタイル調整
+  searchInput.addEventListener('focus', () => {
+    searchInput.style.backgroundColor = 'var(--gem-sys-color-surface, #fff)';
+    searchInput.style.boxShadow = '0 1px 6px rgba(32, 33, 36, 0.28)';
+    searchInput.style.borderColor = 'transparent';
+  });
+  searchInput.addEventListener('blur', () => {
+    searchInput.style.backgroundColor = 'var(--gem-sys-color-surface-container-high, #f0f4f9)';
+    searchInput.style.boxShadow = 'none';
+    searchInput.style.borderColor = 'var(--gem-sys-color-outline, #747775)';
+  });
+
+  searchContainer.appendChild(iconWrapper);
+  searchContainer.appendChild(searchInput);
+
+  headerTitle.parentElement.insertBefore(searchContainer, headerTitle.nextSibling);
+
+  searchInput.addEventListener('input', (e) => {
+    executeGemSearch(e.target.value);
+  });
+}
+
+function executeGemSearch(query) {
+  const term = query.trim().toLowerCase();
+
+  // カード形式のGem (Google製)
+  const premadeCards = document.querySelectorAll('template-gallery-card');
+  premadeCards.forEach(card => {
+    const title = card.querySelector('.template-gallery-card-title')?.textContent || '';
+    const desc = card.querySelector('.template-gallery-card-content')?.textContent || '';
+    const match = title.toLowerCase().includes(term) || desc.toLowerCase().includes(term);
+    card.style.display = match ? '' : 'none';
+  });
+
+  // リスト形式のGem (マイGem)
+  const botRows = document.querySelectorAll('bot-list-row');
+  botRows.forEach(row => {
+    const titleEl = row.querySelector('.bot-title .title') || row.querySelector('.bot-title');
+    const title = titleEl?.textContent || '';
+    const desc = row.querySelector('.bot-desc')?.textContent || '';
+    const match = title.toLowerCase().includes(term) || desc.toLowerCase().includes(term);
+    row.style.display = match ? '' : 'none';
+  });
+
+  updateSectionVisibility();
+}
 
 /**
- * ページ全体のDOM変更を監視し、必要な機能をアタッチ/更新します。
+ * 検索結果が0件のセクションを非表示にする
  */
+function updateSectionVisibility() {
+  // 検索ボックスがない(機能OFF)なら全表示
+  if (!document.getElementById('enhancer-gem-manager-search')) {
+    document.querySelectorAll('.premade-gems, .bot-list-container, .list-header').forEach(el => {
+      el.style.display = '';
+    });
+    document.querySelectorAll('template-gallery-card, bot-list-row').forEach(el => {
+      el.style.display = '';
+    });
+    return;
+  }
+
+  const premadeSection = document.querySelector('.premade-gems');
+  if (premadeSection) {
+    const visibleCards = premadeSection.querySelectorAll('template-gallery-card:not([style*="display: none"])');
+    premadeSection.style.display = (visibleCards.length > 0) ? '' : 'none';
+  }
+
+  const listContainers = document.querySelectorAll('.bot-list-container');
+  listContainers.forEach(container => {
+    const visibleRows = container.querySelectorAll('bot-list-row:not([style*="display: none"])');
+    const isVisible = visibleRows.length > 0;
+    container.style.display = isVisible ? '' : 'none';
+
+    // 直前のヘッダー (h2) も連動して隠す
+    let prev = container.previousElementSibling;
+    while (prev && !prev.classList.contains('list-header')) {
+      prev = prev.previousElementSibling;
+    }
+    if (prev && prev.classList.contains('list-header')) {
+      prev.style.display = isVisible ? '' : 'none';
+    }
+  });
+}
+
+// --- メイン監視ロジック ---
 const mainObserver = new MutationObserver((mutationsList, obs) => {
-  
-  // 機能1: ツールショートカット
+  // ツールショートカット
   if (settings.geminiToolShortcuts) {
-    const promptArea = document.querySelector(PROMPT_AREA_SELECTOR); // 'input-area-v2'
-    
+    const promptArea = document.querySelector(PROMPT_AREA_SELECTOR);
     if (promptArea) {
-      // ★ テクニカルな箇所: /app/ と /gem/ のDOM構造の違いを吸収するハイブリッドロジック
       let injectionTargetWrapper = null;
       let injectionReferenceNode = null;
-
-      // [戦略 1: /app/ & /gem/ 共通]
-      // 優先ラッパー(.leading-actions-wrapper)を探す
       injectionTargetWrapper = promptArea.querySelector(INJECTION_TARGET_SELECTOR);
-      
       if (injectionTargetWrapper) {
-        // [A] ラッパーが見つかった場合、その中のツールボタンを探す
         injectionReferenceNode = injectionTargetWrapper.querySelector('toolbox-drawer');
       } else {
-        // [B] ラッパーが見つからない (フォールバック)
-        // promptArea直下からツールボタンを探す
         injectionReferenceNode = promptArea.querySelector('toolbox-drawer');
-        if (injectionReferenceNode) {
-          // その親をラッパーとして扱う
-          injectionTargetWrapper = injectionReferenceNode.parentNode;
-        }
+        if (injectionReferenceNode) injectionTargetWrapper = injectionReferenceNode.parentNode;
       }
 
-      // [最終チェック]
-      if (injectionTargetWrapper) { // ラッパーさえ見つかればOK
-        
-        // 二重注入を防ぐ
+      if (injectionTargetWrapper) {
         const existingButton = injectionTargetWrapper.querySelector('.enhancer-shortcut-button');
-        if (!existingButton) {
-          // ツールボタン(referenceNode)がなくても末尾に追加される
-          injectToolShortcuts(injectionTargetWrapper, injectionReferenceNode);
-        }
-        
-        // ★ DOMが変更されるたびに、表示/非表示のロジックを再実行する
+        if (!existingButton) injectToolShortcuts(injectionTargetWrapper, injectionReferenceNode);
         updateAllShortcutVisibility();
-        
       }
     }
   }
   
-  // 機能2: Enterキーの動作変更
+  // Enterキー
   if (settings.geminiEnterKey) {
-    // メインの入力欄と、編集時の入力欄の両方に対応
     const mainTextArea = document.querySelector(TEXT_AREA_SELECTOR);
     attachEnterKeyHijack(mainTextArea);
     const editTextArea = document.querySelector(EDIT_TEXT_AREA_SELECTOR);
     attachEnterKeyHijack(editTextArea);
   }
 
-  // 機能3: カスタム幅
-  // (設定がONの場合、DOM変更のたびにスタイルが適用されているか確認)
+  // 幅調整
   applyCustomContentWidth();
+
+  // Gem検索
+  if (settings.enableGemManagerSearch) initGemManagerSearch();
 });
 
-// 監視を開始
-mainObserver.observe(document.body, {
-  childList: true,
-  subtree: true
-});
+mainObserver.observe(document.body, { childList: true, subtree: true });

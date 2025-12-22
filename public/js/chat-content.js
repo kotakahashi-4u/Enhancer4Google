@@ -1,17 +1,16 @@
 /**
  * @file Enhancer 4 Google - Google Chat Content Script
- * Google Chat (chat.google.com) のUIを改善する機能を提供します。
- * - Enterキーの動作変更 (Enterで改行、Shift+Enterで送信)
+ * @description Google ChatのUI改善（Enterキー挙動変更）を行うコンテンツスクリプトです。
  */
 
-// --- 設定管理 ---
+// 設定値の保持
 let settings = {
   chatEnterKey: true,
   submitKeyModifier: 'shift'
 };
 
 /**
- * 拡張機能の設定を chrome.storage.sync から読み込みます。
+ * 拡張機能の設定を読み込み、必要に応じてリスナーを登録します。
  */
 function loadSettings() {
   chrome.storage.sync.get({
@@ -26,7 +25,7 @@ function loadSettings() {
 }
 
 /**
- * chrome.storage の変更を監視し、設定が変更された場合にリスナーを動的にON/OFFします。
+ * 設定変更を監視し、動的に機能のON/OFFを切り替えます。
  */
 chrome.storage.onChanged.addListener((changes, namespace) => {
   if (namespace !== 'sync') return;
@@ -34,52 +33,59 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     const newValue = changes.chatEnterKey.newValue;
     settings.chatEnterKey = newValue;
     if (newValue === true) {
-      attachGlobalListener(); // ONになったらアタッチ
+      attachGlobalListener();
     } else {
-      removeGlobalListener(); // OFFになったらデタッチ
+      removeGlobalListener();
     }
   }
 });
 
-// --- DOMセレクタ ---
-// ★ テクニカルな箇所: Google Chatは有償版と無償版でDOMが異なるため、
-// 両方のセレクタに一致するようカンマ(,)で区切る
+// Google Chatの入力エリアを特定するセレクタ（有償版/無償版など複数パターンに対応）
 const CHAT_TEXT_AREA_SELECTOR = 'div.hj99tb.KRoqRc.editable[role="textbox"], div[jsname="yrriRe"][role="textbox"][contenteditable="true"]';
 const CHAT_EDIT_TEXT_AREA_SELECTOR = 'textarea.Fm0tFe.P6Wwdb.sY2lae[role="textbox"]';
 
+// 送信ボタンのセレクタ
 const CHAT_SUBMIT_BUTTON_SELECTOR = 'button[jsname="GBTyxb"]:not([disabled])';
-const CHAT_EDIT_SUBMIT_BUTTON_SELECTOR = 'button[jsname="WCwBae"]:not([disabled])'; // (編集ボタン)
+const CHAT_EDIT_SUBMIT_BUTTON_SELECTOR = 'button[jsname="WCwBae"]:not([disabled])';
 
 /**
- * ページ(iframe)全体のキー入力を傍受（キャプチャ）するメインのイベントハンドラ。
+ * キー入力を傍受し、Enterキーの挙動を制御するメインハンドラ
  * @param {KeyboardEvent} event
  */
 const handleGlobalKeyDown = (event) => {
+  // 機能OFFまたはEnterキー以外は無視
   if (settings.chatEnterKey === false || event.key !== 'Enter') {
     return;
   }
   const target = event.target;
   
-  // メインのチャット欄か、編集中のチャット欄かを判定
+  // 入力エリア内でのイベントか判定
   const isMainChat = target.matches(CHAT_TEXT_AREA_SELECTOR);
   const isEditChat = target.matches(CHAT_EDIT_TEXT_AREA_SELECTOR);
   
   if (!isMainChat && !isEditChat) {
-    return; // 関係ない場所でのEnterキーは無視
+    return;
   }
 
-  const isSubmitModifierPressed = settings.submitKeyModifier === 'ctrl' ? event.ctrlKey : event.shiftKey;
+  // OSに応じた修飾キーの判定 (MacならMeta/Command, WinならCtrl)
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  let isSubmitModifierPressed = false;
 
+  if (settings.submitKeyModifier === 'ctrl') {
+    isSubmitModifierPressed = isMac ? event.metaKey : event.ctrlKey;
+  } else {
+    isSubmitModifierPressed = event.shiftKey;
+  }
+
+  // 送信操作 (修飾キー + Enter)
   if (isSubmitModifierPressed) {
-    // --- Shift + Enter の場合 (送信) ---
-    event.preventDefault(); // デフォルトの改行をキャンセル
-    event.stopImmediatePropagation(); // 他のリスナーを止める
+    event.preventDefault(); 
+    event.stopImmediatePropagation(); 
     let submitButton = null;
 
     if (isMainChat) {
       submitButton = document.querySelector(CHAT_SUBMIT_BUTTON_SELECTOR);
     } else if (isEditChat) {
-      // 編集中のダイアログは c-wiz の中にある
       const editDialog = target.closest('c-wiz');
       if (editDialog) {
         submitButton = editDialog.querySelector(CHAT_EDIT_SUBMIT_BUTTON_SELECTOR);
@@ -92,16 +98,15 @@ const handleGlobalKeyDown = (event) => {
       console.warn('Enhancer4Google (Google Chat): Could not find submit/save button.');
     }
   } else {
-    // --- Enter のみの場合 (改行) ---
-    event.preventDefault(); // デフォルトの送信動作をキャンセル
-    event.stopImmediatePropagation(); // 他のリスナー（Chatネイティブ）を止める
+    // 改行操作 (Enterのみ)
+    // デフォルトの送信を防ぎ、改行を挿入する
+    event.preventDefault(); 
+    event.stopImmediatePropagation(); 
     
     if (isMainChat) {
-      // ★ テクニカルな箇所: メインの入力欄 (contenteditable="true") で改行を挿入する唯一の方法。
-      // このAPIは非推奨だが、ChatのリッチテキストUIではこれが必要。
       document.execCommand('insertLineBreak');
     } else if (isEditChat) {
-      // 編集欄は通常の <textarea> なので、手動で改行を挿入できる
+      // textareaの場合は値操作で改行挿入
       const start = target.selectionStart;
       const end = target.selectionEnd;
       const value = target.value;
@@ -112,32 +117,25 @@ const handleGlobalKeyDown = (event) => {
 };
 
 /**
- * グローバルキーリスナーを document.body にアタッチします。
- * (Chatはiframe内で動作するため、bodyへのアタッチが最も堅牢)
+ * キャプチャフェーズで document.body にリスナーを登録し、サイト側のイベントより先に捕捉します。
  */
 function attachGlobalListener() {
-  if (!document.body) {
-    return;
-  }
-  // 二重アタッチを防止
-  if (document.body.dataset.chatEnterHijacked === 'true') {
-    return;
-  }
+  if (!document.body) return;
+  if (document.body.dataset.chatEnterHijacked === 'true') return;
+
   document.body.dataset.chatEnterHijacked = 'true';
-  // ★ キャプチャフェーズ (true) で登録し、Chatのリスナーより先に実行
   document.body.addEventListener('keydown', handleGlobalKeyDown, true);
 }
 
 /**
- * グローバルキーリスナーを document.body から解除します。
+ * リスナーを解除します。
  */
 function removeGlobalListener() {
-  if (!document.body || !document.body.dataset.chatEnterHijacked) {
-    return;
-  }
+  if (!document.body || !document.body.dataset.chatEnterHijacked) return;
+  
   document.body.removeEventListener('keydown', handleGlobalKeyDown, true);
   document.body.dataset.chatEnterHijacked = 'false';
 }
 
-// --- 初期化 ---
+// 初期化
 loadSettings();
