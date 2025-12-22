@@ -3,7 +3,7 @@ Google各種サービスに対する拡張機能群。
 
 ## 現在有効な機能
 ### 共通機能
-1. Enterボタン動作改善ON時の送信キー選択（Shift+Enter / Ctrl+Enter）
+1. Enterボタン動作改善ON時の送信キー選択（Shift+Enter / Ctrl+Enter / command+Enter）
 
 ### NotebookLM
 1. NotebookLMのStudioパネルに各種機能群リンクを発生させ、Studioエリアに開閉機能を付与する。
