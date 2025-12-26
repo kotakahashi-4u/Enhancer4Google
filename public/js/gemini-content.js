@@ -1,6 +1,6 @@
 /**
  * @file Enhancer 4 Google - Gemini Content Script
- * @description GeminiのUI改善（ショートカット、Enterキー、幅調整、Gem検索）を行うコンテンツスクリプトです。
+ * @description GeminiのUI改善（ショートカット、Enterキー、幅調整、Gem検索、入力拡大エディタ）を行うコンテンツスクリプトです。
  */
 
 // 設定値
@@ -13,19 +13,6 @@ let settings = {
   enableGemManagerSearch: true,
   geminiExpandInput: true
 };
-
-/**
- * HTMLエスケープ関数 (XSS対策)
- */
-function escapeHtml(text) {
-  if (!text) return text;
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
 
 /**
  * 設定の読み込みと適用
@@ -327,7 +314,7 @@ function injectGeminiStyles() {
     }
     .enhancer-editor-card {
       background: var(--gem-sys-color-surface, #fff);
-      width: 80vw; max-width: 900px; height: 80vh;
+      width: 80vw; max-width: 1100px; height: 80vh;
       border-radius: 16px; display: flex; flex-direction: column;
       box-shadow: 0 12px 32px rgba(0,0,0,0.2);
       animation: enhancer-pop-in 0.2s cubic-bezier(0.2, 0, 0.2, 1);
@@ -337,24 +324,74 @@ function injectGeminiStyles() {
       to { transform: scale(1); opacity: 1; }
     }
     .enhancer-editor-header {
-      padding: 16px 24px; border-bottom: 1px solid var(--gem-sys-color-outline-variant, #e0e0e0);
+      padding: 12px 24px; border-bottom: 1px solid var(--gem-sys-color-outline-variant, #e0e0e0);
       display: flex; justify-content: space-between; align-items: center;
       font-weight: bold; color: var(--gem-sys-color-on-surface, #1f1f1f);
-      background: #f8fafd;
+      background: var(--gem-sys-color-surface-container-high, #f9f9f9);
       border-radius: 16px 16px 0 0;
     }
     .enhancer-editor-body {
-      flex: 1; padding: 16px; display: flex;
+      flex: 1; padding: 0; display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
     }
+    
+    /* ツールバー */
+    .enhancer-editor-toolbar {
+      display: flex; gap: 8px; padding: 8px 16px;
+      border-bottom: 1px solid var(--gem-sys-color-outline-variant, #e0e0e0);
+      background: var(--gem-sys-color-surface, #fff);
+      overflow-x: auto;
+    }
+    .enhancer-toolbar-btn {
+      background: transparent; border: 1px solid transparent; cursor: pointer;
+      padding: 6px; border-radius: 4px; display: flex; align-items: center; justify-content: center;
+      color: var(--gem-sys-color-on-surface-variant, #444746);
+      transition: background 0.2s;
+      min-width: 32px;
+    }
+    .enhancer-toolbar-btn:hover {
+      background: var(--gem-sys-color-surface-container-high, #f0f4f9);
+      color: var(--gem-sys-color-primary, #0b57d0);
+    }
+    .enhancer-toolbar-btn.active {
+      background: var(--gem-sys-color-primary-container, #d3e3fd);
+      color: var(--gem-sys-color-on-primary-container, #041e49);
+    }
+    .enhancer-separator {
+      width: 1px; background: #ccc; margin: 0 4px;
+    }
+    
+    /* エディタエリア & プレビューエリア */
     .enhancer-editor-textarea {
       flex: 1; width: 100%; height: 100%; resize: none; border: none; outline: none;
       font-family: "Google Sans Mono", "Roboto Mono", monospace;
       font-size: 14px; line-height: 1.6; color: var(--gem-sys-color-on-surface, #1f1f1f);
-      background: transparent;
+      background: transparent; padding: 16px; box-sizing: border-box;
     }
+    .enhancer-preview-area {
+      flex: 1; width: 100%; height: 100%; padding: 16px; box-sizing: border-box;
+      overflow-y: auto; display: none; background: #fff;
+      font-family: "Google Sans", sans-serif; font-size: 15px; line-height: 1.6;
+    }
+    .enhancer-preview-area.active { display: block; }
+    
+    /* プレビュースタイル */
+    .enhancer-preview-area h1 { font-size: 1.5em; border-bottom: 1px solid #eee; padding-bottom: 0.3em; margin-top: 0; }
+    .enhancer-preview-area h2 { font-size: 1.3em; margin-top: 1em; }
+    .enhancer-preview-area h3 { font-size: 1.1em; margin-top: 1em; }
+    .enhancer-preview-area pre { background: #f6f8fa; padding: 12px; border-radius: 6px; overflow-x: auto; }
+    .enhancer-preview-area code { font-family: monospace; background: #f0f0f0; padding: 2px 4px; border-radius: 3px; }
+    .enhancer-preview-area blockquote { border-left: 4px solid #ddd; padding-left: 12px; color: #666; margin: 0; }
+    .enhancer-preview-area ul, .enhancer-preview-area ol { padding-left: 24px; }
+    .enhancer-preview-area table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+    .enhancer-preview-area th, .enhancer-preview-area td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    .enhancer-preview-area th { background-color: #f2f2f2; font-weight: bold; }
+
     .enhancer-editor-footer {
       padding: 16px 24px; border-top: 1px solid var(--gem-sys-color-outline-variant, #e0e0e0);
       display: flex; justify-content: flex-end; gap: 12px;
+      background: var(--gem-sys-color-surface, #fff);
+      border-radius: 0 0 16px 16px;
     }
     .enhancer-btn-primary {
       background: var(--gem-sys-color-primary, #1a73e8); color: white;
@@ -590,56 +627,96 @@ function tryInjectExpandButtons() {
 
   injectGeminiStyles();
 
-  const targets = document.querySelectorAll('div.ql-editor.textarea:not(.ql-blank)');
+  const target = document.querySelector('div.ql-editor.textarea');
   
-  targets.forEach(target => {
-    // 既にボタンがあるか、非表示の要素は無視
-    if (target.dataset.hasExpandBtn === 'true') return;
-    if (target.offsetParent === null) return;
+  // 既にボタンがあるか、非表示の要素は無視
+  if (target.dataset.hasExpandBtn === 'true') return;
+  if (target.offsetParent === null) return;
 
-    // ★修正: ボタンを注入するコンテナを決定
-    // エディタ内部(rich-textarea)に入れると高さ計算バグの原因になるため、
-    // その外側の '.instructions-input-container' を優先的に探して親とする。
-    let container = target.closest('.instructions-input-container');
-    
-    // 見つからない場合は従来の親要素(ただしリスクあり)へフォールバック
-    if (!container) {
-        container = target.parentElement;
-    }
+  // ★修正: ボタンを注入するコンテナを決定
+  // エディタ内部(rich-textarea)に入れると高さ計算バグの原因になるため、
+  // その外側の '.instructions-input-container' を優先的に探して親とする。
+  let container = target.closest('.instructions-input-container');
+  
+  // 見つからない場合は従来の親要素(ただしリスクあり)へフォールバック
+  if (!container) {
+      container = target.parentElement;
+  }
 
-    if (!container) return;
+  if (!container) return;
 
-    // コンテナ内に既にボタンがないか確認
-    if (container.querySelector('.enhancer-expand-btn')) {
-        target.dataset.hasExpandBtn = 'true';
-        return;
-    }
+  // コンテナ内に既にボタンがないか確認
+  if (container.querySelector('.enhancer-expand-btn')) {
+      target.dataset.hasExpandBtn = 'true';
+      return;
+  }
 
-    // 親要素のスタイルを調整 (ボタンの絶対配置のため)
-    if (getComputedStyle(container).position === 'static') {
-        container.style.position = 'relative';
-    }
-    container.classList.add('enhancer-input-container');
+  // 親要素のスタイルを調整 (ボタンの絶対配置のため)
+  if (getComputedStyle(container).position === 'static') {
+      container.style.position = 'relative';
+  }
+  container.classList.add('enhancer-input-container');
 
-    const btn = document.createElement('button');
-    btn.className = 'enhancer-expand-btn';
-    btn.type = 'button';
-    btn.title = chrome.i18n.getMessage("btnExpandEdit");
-    
-    // アイコン (open_in_full) - サイズ調整済み
-    btn.innerHTML = `
-      <svg viewBox="0 -960 960 960" width="20" height="20" fill="currentColor">
-        <path d="M160-160v-200h40v131.69l144-144L372.31-344l-144 144H360v40H160Zm440 0v-40h131.69l-144-144L616-372.31l144 144V-360h40v200H600ZM344-587.69l-144-144V-600h-40v-200h200v40H228.31l144 144L344-587.69Zm272 0L587.69-616l144-144H600v-40h200v200h-40v-131.69l-144 144Z"/>
-      </svg>
-    `;btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openEditorModal(target);
-    });
-
-    container.appendChild(btn);
-    target.dataset.hasExpandBtn = 'true';
+  const btn = document.createElement('button');
+  btn.className = 'enhancer-expand-btn';
+  btn.type = 'button';
+  btn.title = chrome.i18n.getMessage("btnExpandEdit");
+  
+  // アイコン (open_in_full) - サイズ調整済み
+  btn.innerHTML = `
+    <svg viewBox="0 -960 960 960" width="20" height="20" fill="currentColor">
+      <path d="M160-160v-200h40v131.69l144-144L372.31-344l-144 144H360v40H160Zm440 0v-40h131.69l-144-144L616-372.31l144 144V-360h40v200H600ZM344-587.69l-144-144V-600h-40v-200h200v40H228.31l144 144L344-587.69Zm272 0L587.69-616l144-144H600v-40h200v200h-40v-131.69l-144 144Z"/>
+    </svg>
+  `;btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openEditorModal(target);
   });
+
+  container.appendChild(btn);
+  target.dataset.hasExpandBtn = 'true';
+}
+
+/**
+ * テキストエリアへの挿入ヘルパー
+ * document.execCommand('insertText') を使用することで、
+ * ブラウザ標準のUndo/Redoスタックに履歴が積まれるようにします。
+ */
+function insertTextAtCursor(textarea, before, after = "") {
+  textarea.focus();
+
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selection = textarea.value.substring(start, end);
+  const replacement = before + selection + after;
+
+  // setRangeText の代わりに execCommand を使用 (DeprecatedだがUndo対応のため必須)
+  // これによりブラウザネイティブの Ctrl+Z / Ctrl+Y (Mac: Cmd+Z) が機能する
+  const success = document.execCommand('insertText', false, replacement);
+  
+  // 万が一 execCommand が機能しない環境へのフォールバック
+  if (!success) {
+    textarea.setRangeText(replacement);
+  }
+
+  // カーソル位置をタグの内側（選択テキスト部分）に設定
+  const newStart = start + before.length;
+  const newEnd = newStart + selection.length;
+  
+  textarea.setSelectionRange(newStart, newEnd);
+}
+
+/**
+ * HTMLエスケープ関数
+ */
+function escapeHtml(text) {
+  if (!text) return text;
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 /**
@@ -664,41 +741,128 @@ function openEditorModal(sourceInput) {
   closeBtn.onclick = () => overlay.remove();
   header.appendChild(closeBtn);
 
+  // --- ツールバー ---
+  const toolbar = document.createElement('div');
+  toolbar.className = 'enhancer-editor-toolbar';
+
+  const createBtn = (icon, title, action) => {
+    const b = document.createElement('button');
+    b.className = 'enhancer-toolbar-btn';
+    b.title = title;
+    b.innerHTML = `<span class="material-icons-outlined" style="font-size:18px;">${icon}</span>`;
+    
+    // アイコンフォントがない場合のフォールバック（簡易文字）
+    if (!document.querySelector('link[href*="Material+Icons"]')) {
+        let fallbackChar = title.substring(0, 1);
+        if(title === "Bold") fallbackChar = "B";
+        if(title === "Italic") fallbackChar = "I";
+        if(title.includes("Heading")) fallbackChar = "H";
+        if(title === "List") fallbackChar = "•";
+        if(title === "Checklist") fallbackChar = "☑";
+        if(title === "Code Block") fallbackChar = "</>";
+        if(title === "Insert Table") fallbackChar = "▦";
+        if(title === "Toggle Preview") fallbackChar = "👁";
+        b.textContent = fallbackChar;
+        b.style.fontWeight = "bold";
+    }
+    
+    b.onclick = action;
+    return b;
+  };
+
+  // ツールバーボタンの定義
+  toolbar.appendChild(createBtn('format_bold', 'Bold', () => insertTextAtCursor(textarea, '**', '**')));
+  toolbar.appendChild(createBtn('format_italic', 'Italic', () => insertTextAtCursor(textarea, '*', '*')));
+  
+  const sep1 = document.createElement('div'); sep1.className = 'enhancer-separator'; toolbar.appendChild(sep1);
+
+  toolbar.appendChild(createBtn('title', 'Heading 1', () => insertTextAtCursor(textarea, '# ')));
+  toolbar.appendChild(createBtn('format_size', 'Heading 2', () => insertTextAtCursor(textarea, '## ')));
+  
+  const sep2 = document.createElement('div'); sep2.className = 'enhancer-separator'; toolbar.appendChild(sep2);
+
+  toolbar.appendChild(createBtn('format_list_bulleted', 'List', () => insertTextAtCursor(textarea, '- ')));
+  toolbar.appendChild(createBtn('check_box', 'Checklist', () => insertTextAtCursor(textarea, '- [ ] ')));
+
+  const sep3 = document.createElement('div'); sep3.className = 'enhancer-separator'; toolbar.appendChild(sep3);
+
+  toolbar.appendChild(createBtn('code', 'Code Block', () => insertTextAtCursor(textarea, '```\n', '\n```')));
+  toolbar.appendChild(createBtn('table_chart', 'Insert Table', () => insertTextAtCursor(textarea, '| Header 1 | Header 2 |\n| :--- | :--- |\n| Cell 1 | Cell 2 |')));
+
+  const sep4 = document.createElement('div'); sep4.className = 'enhancer-separator'; toolbar.appendChild(sep4);
+
+  // YAMLテンプレート
+  const yamlBtn = createBtn('settings_suggest', 'Insert YAML Template', () => {
+      insertTextAtCursor(textarea, '---\nrole: \ngoal: \ncontext: \n---\n');
+  });
+  // YAMLボタンはテキスト表示にする
+  yamlBtn.innerHTML = '<span style="font-size:10px; font-weight:bold;">YAML</span>';
+  toolbar.appendChild(yamlBtn);
+
+  // スペーサー
+  const spacer = document.createElement('div');
+  spacer.style.flex = '1';
+  toolbar.appendChild(spacer);
+
+  // プレビュー切り替え
+  const previewBtn = createBtn('visibility', 'Toggle Preview', () => {
+      const isPreview = previewArea.classList.toggle('active');
+      textarea.style.display = isPreview ? 'none' : 'block';
+      previewBtn.classList.toggle('active', isPreview);
+      
+      if (isPreview) {
+          // marked.js を使用してパース
+          if (typeof marked !== 'undefined') {
+              previewArea.innerHTML = marked.parse(textarea.value, { breaks: true, gfm: true });
+          } else {
+              previewArea.textContent = "Error: marked.js library not loaded.";
+          }
+      } else {
+          textarea.focus();
+      }
+  });
+  toolbar.appendChild(previewBtn);
+
+  // --- ボディ ---
   const body = document.createElement('div');
   body.className = 'enhancer-editor-body';
+  
   const textarea = document.createElement('textarea');
   textarea.className = 'enhancer-editor-textarea';
   
-  // ★重要修正: 値の取得ロジック (空行問題への対応)
+  // 値の取得ロジック
   let initialValue = "";
   if (sourceInput.tagName === 'TEXTAREA' || sourceInput.tagName === 'INPUT') {
       initialValue = sourceInput.value || "";
   } else {
-      // リッチテキストの場合、<p>タグ構造を解析して正確な改行を取得する
+      // contenteditable divの場合の取得（前回の空行対策含む）
       if (sourceInput.classList.contains('ql-editor')) {
           const paragraphs = sourceInput.querySelectorAll('p');
           if (paragraphs.length > 0) {
-              // 各<p>タグのテキストコンテンツを取得し、改行で結合
               initialValue = Array.from(paragraphs).map(p => {
-                  // <br>のみの段落は空文字として扱う
                   if (p.innerHTML === '<br>' || p.textContent.trim() === '') {
                       return '';
                   }
                   return p.textContent;
               }).join('\n');
           } else {
-              // <p>がない場合（フォールバック）
               initialValue = sourceInput.innerText || "";
           }
       } else {
-           // その他のcontenteditableの場合（念のため以前のロジックも残す）
            initialValue = (sourceInput.innerText || sourceInput.textContent || "").trim();
       }
   }
   textarea.value = initialValue;
-  
-  body.appendChild(textarea);
 
+  // プレビューエリア
+  const previewArea = document.createElement('div');
+  previewArea.className = 'enhancer-preview-area';
+
+  body.appendChild(toolbar);
+  body.appendChild(textarea);
+  body.appendChild(previewArea);
+
+  // --- フッター ---
   const footer = document.createElement('div');
   footer.className = 'enhancer-editor-footer';
   
@@ -740,11 +904,19 @@ function openEditorModal(sourceInput) {
   overlay.appendChild(card);
   document.body.appendChild(overlay);
 
-  requestAnimationFrame(() => textarea.focus());
-
-  textarea.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') overlay.remove();
+  requestAnimationFrame(() => {
+    textarea.focus();
+    textarea.setSelectionRange(0, 0); // 先頭に
+    textarea.scrollTop = 0;           // スクロールも上へ
   });
+
+  const handleEsc = (e) => {
+    if (e.key === 'Escape') {
+        overlay.remove();
+        document.removeEventListener('keydown', handleEsc);
+    }
+  };
+  document.addEventListener('keydown', handleEsc);
 }
 
 // --- メイン監視ロジック ---
@@ -800,8 +972,10 @@ document.addEventListener('click', () => {
   if (settings.geminiExpandInput) setTimeout(tryInjectExpandButtons, 500);
 });
 document.addEventListener('focusin', (e) => {
-  // 修正: 対象要素の条件を絞り込み
-  if (settings.geminiExpandInput && (e.target.classList.contains('ql-editor') || e.target.getAttribute('contenteditable') === 'true')) {
-    tryInjectExpandButtons();
+  // ターゲット要素の条件
+  if (settings.geminiExpandInput && 
+      !e.target.classList.contains('new-input-ui') && 
+      (e.target.classList.contains('ql-editor') || e.target.getAttribute('contenteditable') === 'true')) {
+      tryInjectExpandButtons();
   }
 });

@@ -50,6 +50,7 @@
         "https://gemini.google.com/*"
       ],
       "js": [
+        "public/js/lib/marked.min.js",
         "public/js/gemini-content.js"
       ],
       "run_at": "document_idle"
