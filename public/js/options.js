@@ -103,6 +103,7 @@ function saveOptions() {
   const geminiLayoutWidthEnabled = document.getElementById('geminiLayoutWidthEnabled').checked;
   const geminiLayoutWidthValue = document.getElementById('geminiLayoutWidthValue').value;
   const gemManagerSearch = document.getElementById('enableGemManagerSearch').checked;
+  const geminiExpand = document.getElementById('geminiExpandInput').checked;
 
   // Google Chat
   const chatEnter = document.getElementById('chatEnterKey').checked;
@@ -123,6 +124,7 @@ function saveOptions() {
     geminiLayoutWidthEnabled: geminiLayoutWidthEnabled,
     geminiLayoutWidthValue: geminiLayoutWidthValue,
     enableGemManagerSearch: gemManagerSearch,
+    geminiExpandInput: geminiExpand,
     chatEnterKey: chatEnter,
     submitKeyModifier: submitKey,
     slidesPdfImport: slidesImport,
@@ -149,6 +151,7 @@ function restoreOptions() {
     geminiLayoutWidthEnabled: false,
     geminiLayoutWidthValue: 1200,
     enableGemManagerSearch: true,
+    geminiExpandInput: true,
     chatEnterKey: true,
     submitKeyModifier: 'shift',
     slidesPdfImport: true,
@@ -167,6 +170,7 @@ function restoreOptions() {
     document.getElementById('geminiLayoutWidthValue').value = items.geminiLayoutWidthValue;
     document.getElementById('geminiLayoutWidthValue').disabled = !items.geminiLayoutWidthEnabled;
     document.getElementById('enableGemManagerSearch').checked = items.enableGemManagerSearch;
+    document.getElementById('geminiExpandInput').checked = items.geminiExpandInput;
 
     // Google Chat 
     document.getElementById('chatEnterKey').checked = items.chatEnterKey;
@@ -876,6 +880,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   widthValueInput.addEventListener('change', handleWidthInput);
   document.getElementById('enableGemManagerSearch').addEventListener('change', saveOptions);
+  document.getElementById('geminiExpandInput').addEventListener('change', saveOptions);
 
   // Google Chat
   document.getElementById('chatEnterKey').addEventListener('change', saveOptions);

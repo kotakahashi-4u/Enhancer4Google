@@ -483,5 +483,20 @@
 	},
 	"crawlerLogStart": {
 		"message": "Process started..."
+	},
+	"featureGeminiExpandInput": {
+		"message": "Expandable Input Editor"
+	},
+  "featureGeminiExpandInputDesc": {
+		"message": "Adds an 'Expand to Edit' button to long text input fields like Gem custom instructions."
+	},
+  "btnExpandEdit": {
+		"message": "Expand to Edit"
+	},
+  "btnApply": {
+		"message": "Apply"
+	},
+  "modalTitleEdit": {
+		"message": "Edit Text"
 	}
 }

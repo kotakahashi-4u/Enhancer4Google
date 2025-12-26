@@ -483,5 +483,20 @@
 	},
 	"crawlerLogStart": {
 		"message": "処理を開始しました..."
+	},
+	"featureGeminiExpandInput": {
+		"message": "入力エリアの拡大編集機能"
+	},
+  "featureGeminiExpandInputDesc": {
+		"message": "Gemのカスタム指示など、長いテキスト入力欄に「拡大して編集」ボタンを追加します。"
+	},
+  "btnExpandEdit": {
+		"message": "拡大して編集"
+	},
+  "btnApply": {
+		"message": "反映する"
+	},
+  "modalTitleEdit": {
+		"message": "テキストの編集"
 	}
 }
