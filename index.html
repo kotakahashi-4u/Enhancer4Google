@@ -178,7 +178,7 @@
       <p>「Enhancer 4 Google」（以下、本拡張機能）は、ユーザーのプライバシーを最優先に考えて設計されています。本ポリシーでは、本拡張機能がどのようにデータを扱い、保護するかについて説明します。</p>
       
       <div class="note">
-        <p><strong>要約:</strong> 本拡張機能は、ユーザーの個人情報、閲覧履歴、入力データを開発者のサーバーへ送信・収集することは一切ありません。</p>
+        <p><strong>要約:</strong> 本拡張機能は、ユーザーの個人情報、閲覧履歴、入力データを開発者のサーバーへ送信・収集することは一切ありません。すべての処理はユーザーのブラウザおよびGoogleの公式APIとの直接通信によって行われます。</p>
       </div>
     </div>
 
@@ -189,11 +189,11 @@
       <p>本拡張機能の設定（ON/OFF状態やパラメータ）は、すべてお客様のブラウザ内（Chrome Storage）に保存されます。これらが外部サーバーへ送信されることはありません。</p>
 
       <h3>2. 外部通信とデータ送信</h3>
-      <p>本拡張機能は、以下の特定の機能を利用する場合にのみ、外部と通信を行います。</p>
+      <p>本拡張機能は、以下の特定の機能を利用する場合にのみ、外部（Google API または指定されたウェブサイト）と通信を行います。</p>
       
       <ul>
-        <li><strong>Google Slides 連携機能:</strong> PDFデータをスライドに変換する際、お客様自身が設定画面に入力した Google Apps Script (GAS) のURLに対してデータを送信します。この通信はブラウザから直接行われ、開発者が介入することはありません。</li>
-        <li><strong>Webクローラー機能:</strong> お客様が指定したURLの情報を取得するためにアクセスします。取得したデータはブラウザ内でMarkdownファイルに変換され、ダウンロードされます。開発者のサーバーへ送信されることはありません。</li>
+        <li><strong>Google Slides 連携機能:</strong> PDFデータをスライドに変換するため、<strong>Google Drive API</strong> および <strong>Google Slides API</strong> を使用します。PDFから変換された画像データは一時的にお客様自身のGoogleドライブにアップロードされ、スライドへの挿入完了後に即座に削除されます。このプロセスにおいて、データが開発者や第三者のサーバーへ送信されることはありません。</li>
+        <li><strong>Webクローラー機能:</strong> お客様が指定したURLの情報を取得するために、そのウェブサイトへアクセスします。取得したデータはブラウザ内でMarkdownファイルに変換され、ダウンロードされます。開発者のサーバーへ送信されることはありません。</li>
       </ul>
     </div>
 
@@ -202,6 +202,9 @@
       <p>本拡張機能は、機能の実現に必要な最小限の権限のみを使用します。</p>
 
       <ul>
+        <li><strong>identity:</strong> GoogleドライブおよびGoogleスライドを操作するためのOAuth2認証トークンを取得するために使用します。</li>
+        <li><strong>drive.file:</strong> スライド作成時に使用する一時画像ファイルを、Googleドライブへアップロード・削除するために使用します。<strong>本拡張機能が作成したファイルのみにアクセスし、お客様の既存のファイルには一切アクセスしません。</strong></li>
+        <li><strong>presentations:</strong> Googleスライドを新規作成し、編集するために使用します。</li>
         <li><strong>storage:</strong> ユーザーの設定情報をブラウザ内に保存するために使用します。</li>
         <li><strong>alarms:</strong> NotebookLMの同期スケジューラー（定期実行）機能のために使用します。</li>
         <li><strong>host_permissions (&lt;all_urls&gt;):</strong> 「Webクローラー機能」において、ユーザーが指定した任意のウェブサイトの情報を取得・解析し、NotebookLM用のソースを作成するために必要です。この権限は、ユーザーが明示的にクローリングを実行したときのみ行使されます。</li>
@@ -209,8 +212,17 @@
     </div>
 
     <div class="card">
+      <h2>Google API ユーザーデータの取り扱い</h2>
+      <p>本拡張機能は、Google APIから取得した情報の使用および他のアプリへの転送において、<a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank">Google API Services User Data Policy</a>（Limited Use requirementsを含む）を遵守します。</p>
+      <ul>
+        <li>本拡張機能は、スライド作成機能を実行する目的でのみGoogleユーザーデータ（Driveファイル、スライド）を使用します。</li>
+        <li>ユーザーデータが人間の目に触れることはなく、広告目的で使用されることもありません。</li>
+      </ul>
+    </div>
+
+    <div class="card">
       <h2>免責事項</h2>
-      <p>本拡張機能は「現状有姿」で提供されます。開発者は、本拡張機能の使用によって生じたいかなる損害（データの損失、業務の中断等を含む）についても、一切の責任を負いません。外部サイトのクローリングやGASの利用は、ユーザー自身の責任において行ってください。</p>
+      <p>本拡張機能は「現状有姿」で提供されます。開発者は、本拡張機能の使用によって生じたいかなる損害（データの損失、業務の中断等を含む）についても、一切の責任を負いません。外部サイトのクローリングは、ユーザー自身の責任において行ってください。</p>
     </div>
 
     <div class="card">
@@ -223,9 +235,14 @@
 
   <footer class="footer">
     <div class="container">
-      &copy; 2025 Enhancer 4 Google. All rights reserved.
+      &copy; <span id="copyright-year"></span> Enhancer 4 Google
     </div>
   </footer>
+
+  <script>
+    // 現在の年を取得して表示
+    document.getElementById('copyright-year').textContent = new Date().getFullYear();
+  </script>
 
 </body>
 </html>
