@@ -4,246 +4,264 @@
   <meta charset="UTF-8">
   <meta name="google-site-verification" content="IFde4nBHF3CWjFWAqgK23hKMClKorxAN00CIjJoKvhI" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Enhancer 4 Google - プライバシーポリシー</title>
+  <title>Enhancer 4 Google - Googleサービスを次のレベルへ</title>
   <style>
     :root {
-      --theme-color: #1BA1E3;
-      --theme-color-light: rgba(27, 161, 227, 0.1);
-      --text-dark: #2c3e50;
+      --primary-color: #1BA1E3;
+      --text-dark: #202124;
       --text-light: #5f6368;
-      --bg-main: #f8f9fa;
-      --bg-card: #ffffff;
-      --border-color: #ecf0f1;
+      --bg-gray: #f8f9fa;
+      --bg-white: #ffffff;
     }
-
+    
     body {
-      font-family: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: var(--bg-main);
       color: var(--text-dark);
       line-height: 1.6;
+      background-color: var(--bg-white);
     }
 
-    /* ヘッダーエリア */
-    .header {
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
-      padding: 20px 0;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+    /* ヒーローセクション */
+    .hero {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 80px 20px;
+      text-align: center;
     }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    .header-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: var(--theme-color);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    h1 {
-      font-size: 1.4rem;
-      margin: 0;
-      color: var(--text-dark);
-    }
-
-    .github-link {
-      color: var(--text-light);
-      text-decoration: none;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: color 0.2s;
-    }
-    .github-link:hover {
-      color: var(--theme-color);
-    }
-
-    /* メインコンテンツ */
-    .main {
-      padding: 40px 0;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      padding: 32px;
-      margin-bottom: 24px;
-    }
-
-    h2 {
-      font-size: 1.2rem;
-      color: var(--text-dark);
-      border-bottom: 2px solid var(--theme-color-light);
-      padding-bottom: 10px;
-      margin-top: 0;
+    
+    .hero h1 {
+      font-size: 3rem;
       margin-bottom: 20px;
-    }
-
-    h3 {
-      font-size: 1rem;
       color: var(--text-dark);
-      margin-top: 24px;
-      margin-bottom: 10px;
     }
-
-    p, li {
+    
+    .hero p {
+      font-size: 1.2rem;
       color: var(--text-light);
-      font-size: 0.95rem;
-      margin-bottom: 12px;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+    
+    .btn-store {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(27, 161, 227, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .btn-store:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(27, 161, 227, 0.4);
     }
 
-    ul {
-      padding-left: 20px;
+    /* 機能セクション */
+    .section {
+      padding: 60px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
     }
-
-    li {
-      margin-bottom: 8px;
-    }
-
-    /* 重要な注記 */
-    .note {
-      background-color: var(--theme-color-light);
-      border-left: 4px solid var(--theme-color);
-      padding: 16px;
-      border-radius: 4px;
-      margin: 20px 0;
-    }
-    .note p {
-      margin: 0;
+    
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 50px;
       color: var(--text-dark);
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: var(--primary-color);
+      margin: 15px auto 0;
+      border-radius: 2px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .feature-card {
+      background: var(--bg-white);
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 30px;
+      transition: box-shadow 0.3s;
+    }
+    
+    .feature-card:hover {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .feature-card h3 {
+      font-size: 1.3rem;
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .feature-list li {
+      margin-bottom: 15px;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .feature-list li::before {
+      content: "✔";
+      position: absolute;
+      left: 0;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .feature-list strong {
+      display: block;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .bg-gray {
+      background-color: var(--bg-gray);
     }
 
     /* フッター */
     .footer {
+      background-color: #333;
+      color: #fff;
+      padding: 40px 20px;
       text-align: center;
-      padding: 40px 0;
-      color: var(--text-light);
-      font-size: 0.85rem;
-      border-top: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+    
+    .footer a {
+      color: #fff;
+      text-decoration: underline;
+      margin: 0 10px;
+    }
+    
+    .footer a:hover {
+      color: var(--primary-color);
     }
 
     @media (max-width: 600px) {
-      .card { padding: 20px; }
-      h1 { font-size: 1.2rem; }
+      .hero h1 { font-size: 2rem; }
+      .section-title { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="container header-content">
-      <div class="logo-area">
-        <div class="logo-icon">E</div>
-        <h1>Enhancer 4 Google</h1>
+  <div class="hero">
+    <h1>Enhancer 4 Google</h1>
+    <p>各種Googleサービスのポテンシャルを最大限に引き出す。<br>パワーユーザーのための究極の機能拡張ツール。</p>
+    <a href="https://chromewebstore.google.com/detail/enhancer-4-google/cmihmmpeladlmemlonckioeleobhggfl" class="btn-store" target="_blank">Chromeウェブストアで見る</a>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">NotebookLM を「最強のナレッジベース」に</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>Webクローラー & ソース生成</h3>
+        <ul class="feature-list">
+          <li><strong>Webサイトを丸ごと知識化</strong><br>指定したURLからリンクを辿って自動クローリング。階層構造を持つWebサイトを、NotebookLMに最適化された1つのMarkdownファイルとして結合・出力します。</li>
+        </ul>
       </div>
-      <a href="https://github.com/kotakahashi-4u/Enhancer4Google" class="github-link" target="_blank">
-        <svg height="20" viewBox="0 0 16 16" width="20" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-        GitHub
-      </a>
-    </div>
-  </header>
-
-  <main class="main container">
-    
-    <div class="card">
-      <h2>プライバシーポリシー</h2>
-      <p>「Enhancer 4 Google」（以下、本拡張機能）は、ユーザーのプライバシーを最優先に考えて設計されています。本ポリシーでは、本拡張機能がどのようにデータを扱い、保護するかについて説明します。</p>
-      
-      <div class="note">
-        <p><strong>要約:</strong> 本拡張機能は、ユーザーの個人情報、閲覧履歴、入力データを開発者のサーバーへ送信・収集することは一切ありません。すべての処理はユーザーのブラウザおよびGoogleの公式APIとの直接通信によって行われます。</p>
+      <div class="feature-card">
+        <h3>自動化と最適化</h3>
+        <ul class="feature-list">
+          <li><strong>同期スケジューラー</strong><br>指定した間隔（毎時、毎日、毎週など）でバックグラウンド同期を実行。ノートブックを常に最新の状態に保ちます。</li>
+          <li><strong>全ソース一括同期</strong><br>多数のソースもワンクリックで一括更新チェック。</li>
+          <li><strong>Studioパネルの最適化</strong><br>画面を占有するパネルを折りたたみ、誤操作によるクレジット消費を防ぎます。</li>
+        </ul>
       </div>
     </div>
+  </div>
 
-    <div class="card">
-      <h2>データの収集と使用について</h2>
-      
-      <h3>1. データの保存場所</h3>
-      <p>本拡張機能の設定（ON/OFF状態やパラメータ）は、すべてお客様のブラウザ内（Chrome Storage）に保存されます。これらが外部サーバーへ送信されることはありません。</p>
-
-      <h3>2. 外部通信とデータ送信</h3>
-      <p>本拡張機能は、以下の特定の機能を利用する場合にのみ、外部（Google API または指定されたウェブサイト）と通信を行います。</p>
-      
-      <ul>
-        <li><strong>Google Slides 連携機能:</strong> PDFデータをスライドに変換するため、<strong>Google Drive API</strong> および <strong>Google Slides API</strong> を使用します。PDFから変換された画像データは一時的にお客様自身のGoogleドライブにアップロードされ、スライドへの挿入完了後に即座に削除されます。このプロセスにおいて、データが開発者や第三者のサーバーへ送信されることはありません。</li>
-        <li><strong>Webクローラー機能:</strong> お客様が指定したURLの情報を取得するために、そのウェブサイトへアクセスします。取得したデータはブラウザ内でMarkdownファイルに変換され、ダウンロードされます。開発者のサーバーへ送信されることはありません。</li>
-      </ul>
+  <div class="section bg-gray">
+    <h2 class="section-title">Gemini & Chat を「快適な執筆環境」に</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>Gemini 拡張機能</h3>
+        <ul class="feature-list">
+          <li><strong>コンテンツ幅の拡張 (Wide Mode)</strong><br>760px〜5000pxまで表示幅を自由に調整。コードや表も見やすく表示。</li>
+          <li><strong>拡張Markdownエディタ</strong><br>「拡大して編集」ボタンで、プレビュー付きの広々としたエディタが起動。</li>
+          <li><strong>ツールショートカット</strong><br>Deep ResearchやCanvasへのアクセスを効率化。</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h3>誤送信防止 & 共通機能</h3>
+        <ul class="feature-list">
+          <li><strong>Enterキー設定の変更</strong><br>「Enterで改行、Shift+Enterで送信」に変更可能。エンジニアやライターに馴染みのある操作感を提供し、誤送信を防ぎます。</li>
+          <li><strong>Gemマネージャー検索</strong><br>増えたGemを名前や説明文から瞬時に検索可能に。</li>
+        </ul>
+      </div>
     </div>
+  </div>
 
-    <div class="card">
-      <h2>権限の使用目的</h2>
-      <p>本拡張機能は、機能の実現に必要な最小限の権限のみを使用します。</p>
-
-      <ul>
-        <li><strong>identity:</strong> GoogleドライブおよびGoogleスライドを操作するためのOAuth2認証トークンを取得するために使用します。</li>
-        <li><strong>drive.file:</strong> スライド作成時に使用する一時画像ファイルを、Googleドライブへアップロード・削除するために使用します。<strong>本拡張機能が作成したファイルのみにアクセスし、お客様の既存のファイルには一切アクセスしません。</strong></li>
-        <li><strong>presentations:</strong> Googleスライドを新規作成し、編集するために使用します。</li>
-        <li><strong>storage:</strong> ユーザーの設定情報をブラウザ内に保存するために使用します。</li>
-        <li><strong>alarms:</strong> NotebookLMの同期スケジューラー（定期実行）機能のために使用します。</li>
-        <li><strong>host_permissions (&lt;all_urls&gt;):</strong> 「Webクローラー機能」において、ユーザーが指定した任意のウェブサイトの情報を取得・解析し、NotebookLM用のソースを作成するために必要です。この権限は、ユーザーが明示的にクローリングを実行したときのみ行使されます。</li>
-      </ul>
+  <div class="section">
+    <h2 class="section-title">Google Slides で「資料作成を自動化」</h2>
+    <div class="feature-grid">
+      <div class="feature-card" style="width: 100%; grid-column: 1 / -1;">
+        <h3>PDF to Slides インポート</h3>
+        <p>PDF資料をスライド化する手間をゼロにします。最新のAPI連携により、面倒なセットアップは不要になりました。</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+          <ul class="feature-list">
+            <li><strong>ドラッグ＆ドロップで完了</strong><br>スライド編集画面に追加される「PDF取込」ボタンから、PDFファイルを放り込むだけ。</li>
+            <li><strong>完全自動フィット (Auto-Fit)</strong><br>PDFのサイズを自動解析し、スライドサイズ（16:9）に合わせて最適なサイズで中央に配置します。</li>
+          </ul>
+          <ul class="feature-list">
+            <li><strong>GAS構築不要</strong><br>拡張機能単体で動作します。Google Drive API / Slides API を直接利用するため、ユーザーによるスクリプト設置は一切不要です。</li>
+            <li><strong>画像ZIP一括ダウンロード</strong><br>変換された高画質画像をZIPで一括保存することも可能です。</li>
+          </ul>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="card">
-      <h2>Google API ユーザーデータの取り扱い</h2>
-      <p>本拡張機能は、Google APIから取得した情報の使用および他のアプリへの転送において、<a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank">Google API Services User Data Policy</a>（Limited Use requirementsを含む）を遵守します。</p>
-      <ul>
-        <li>本拡張機能は、スライド作成機能を実行する目的でのみGoogleユーザーデータ（Driveファイル、スライド）を使用します。</li>
-        <li>ユーザーデータが人間の目に触れることはなく、広告目的で使用されることもありません。</li>
-      </ul>
+  <div class="section bg-gray" style="text-align: center;">
+    <h2>プライバシーとセキュリティ</h2>
+    <p style="max-width: 700px; margin: 0 auto 30px;">本拡張機能は「ユーザーのプライバシー保護」を最優先に設計されています。</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>データはあなたの元に</h3>
+        <p>設定情報やタスクデータはすべてブラウザ内（Chrome Storage）にのみ保存されます。開発者のサーバーへ送信されることは一切ありません。</p>
+      </div>
+      <div class="feature-card">
+        <h3>透明性のある通信</h3>
+        <p>スライド作成時はGoogle公式API（Drive/Slides）と直接通信し、一時ファイルは即座に削除されます。第三者へのデータ送信は行われません。</p>
+      </div>
     </div>
-
-    <div class="card">
-      <h2>免責事項</h2>
-      <p>本拡張機能は「現状有姿」で提供されます。開発者は、本拡張機能の使用によって生じたいかなる損害（データの損失、業務の中断等を含む）についても、一切の責任を負いません。外部サイトのクローリングは、ユーザー自身の責任において行ってください。</p>
-    </div>
-
-    <div class="card">
-      <h2>お問い合わせ</h2>
-      <p>本ポリシーに関するご質問や、不具合の報告は、GitHubリポジトリのIssueよりお願いいたします。</p>
-      <p><a href="https://github.com/kotakahashi-4u/Enhancer4Google" target="_blank">GitHub Repository</a></p>
-    </div>
-
-  </main>
+  </div>
 
   <footer class="footer">
     <div class="container">
+      <a href="privacy.html" target="_blank">プライバシーポリシー (Privacy Policy)</a>
+      <br><br>
       &copy; <span id="copyright-year"></span> Enhancer 4 Google
-      <br>
-      <a href="https://kotakahashi-4u.github.io/Enhancer4Google/privacy.html" style="color: inherit; text-decoration: none; font-size: 0.8rem;">Privacy Policy</a>
-      </div>
+    </div>
   </footer>
 
   <script>
-    // 現在の年を取得して表示
     document.getElementById('copyright-year').textContent = new Date().getFullYear();
   </script>
 
