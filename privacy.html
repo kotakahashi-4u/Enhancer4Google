@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="google-site-verification" content="IFde4nBHF3CWjFWAqgK23hKMClKorxAN00CIjJoKvhI" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Enhancer 4 Google - プライバシーポリシー</title>
+  <title>Enhancer 4 Google - Privacy Policy</title>
   <style>
     :root {
       --theme-color: #1BA1E3;
@@ -29,7 +29,7 @@
     .header {
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
-      padding: 20px 0;
+      padding: 15px 0;
       box-shadow: 0 2px 4px rgba(0,0,0,0.02);
       position: sticky;
       top: 0;
@@ -68,22 +68,39 @@
     }
 
     h1 {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       margin: 0;
       color: var(--text-dark);
     }
 
-    .github-link {
-      color: var(--text-light);
-      text-decoration: none;
-      font-size: 0.9rem;
+    /* 言語切り替えスイッチ */
+    .lang-switch {
       display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: color 0.2s;
+      background: #f1f3f4;
+      border-radius: 20px;
+      padding: 2px;
     }
-    .github-link:hover {
+
+    .lang-btn {
+      border: none;
+      background: none;
+      padding: 6px 14px;
+      border-radius: 18px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: white;
       color: var(--theme-color);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--text-dark);
     }
 
     /* メインコンテンツ */
@@ -113,6 +130,7 @@
       color: var(--text-dark);
       margin-top: 24px;
       margin-bottom: 10px;
+      font-weight: bold;
     }
 
     p, li {
@@ -151,9 +169,24 @@
       border-top: 1px solid var(--border-color);
     }
 
+    /* 言語コンテンツ制御 */
+    .lang-content {
+      display: none; /* デフォルト非表示 */
+      animation: fadeIn 0.3s ease;
+    }
+    .lang-content.active {
+      display: block; /* アクティブな言語のみ表示 */
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     @media (max-width: 600px) {
       .card { padding: 20px; }
-      h1 { font-size: 1.2rem; }
+      h1 { font-size: 1rem; }
+      .header { padding: 10px 0; }
     }
   </style>
 </head>
@@ -165,71 +198,118 @@
         <div class="logo-icon">E</div>
         <h1>Enhancer 4 Google</h1>
       </div>
-      <a href="https://github.com/kotakahashi-4u/Enhancer4Google" class="github-link" target="_blank">
-        <svg height="20" viewBox="0 0 16 16" width="20" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-        GitHub
-      </a>
+      
+      <div class="lang-switch">
+        <button class="lang-btn" onclick="switchLang('en')" id="btn-en">English</button>
+        <button class="lang-btn" onclick="switchLang('ja')" id="btn-ja">日本語</button>
+      </div>
     </div>
   </header>
 
   <main class="main container">
     
-    <div class="card">
-      <h2>プライバシーポリシー</h2>
-      <p>「Enhancer 4 Google」（以下、本拡張機能）は、ユーザーのプライバシーを最優先に考えて設計されています。本ポリシーでは、本拡張機能がどのようにデータを扱い、保護するかについて説明します。</p>
-      
-      <div class="note">
-        <p><strong>要約:</strong> 本拡張機能は、ユーザーの個人情報、閲覧履歴、入力データを開発者のサーバーへ送信・収集することは一切ありません。すべての処理はユーザーのブラウザおよびGoogleの公式APIとの直接通信によって行われます。</p>
+    <div id="content-en" class="lang-content">
+      <div class="card">
+        <h2>Privacy Policy</h2>
+        <p>Last Updated: January 2, 2026</p>
+        <p>"Enhancer 4 Google" (hereinafter referred to as "this extension") prioritizes user privacy. This policy explains how we handle your data in compliance with the Google API Services User Data Policy.</p>
+        
+        <div class="note">
+          <p><strong>Summary:</strong> We do not collect your personal information, browsing history, or input data on our servers. All processing occurs locally within your browser or via direct communication with Google's official APIs.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>1. Data Accessed</h2>
+        <p>This extension accesses the following Google user data only when explicitly initiated by the user:</p>
+        <ul>
+          <li><strong>Google Drive Files (drive.file):</strong> Access is limited ONLY to files created by this extension itself (e.g., temporary image files converted from PDF). We DO NOT access, read, or modify your existing documents or photos in Google Drive.</li>
+          <li><strong>Google Slides (presentations):</strong> Access is required to create new slides and insert images into the active presentation initiated by the user.</li>
+          <li><strong>User Identity (userinfo.profile/email):</strong> Access is used solely to verify the user's session for Google Drive/Slides API operations via Chrome Identity API.</li>
+        </ul>
+
+        <h2>2. Data Usage</h2>
+        <p>The accessed Google user data is used exclusively for the following purpose:</p>
+        <ul>
+          <li><strong>PDF to Slides Conversion:</strong> To convert a local PDF file selected by the user into Google Slides. The extension temporarily uploads converted images to the user's Google Drive, inserts them into a Google Slide, and then immediately deletes the temporary files.</li>
+        </ul>
+        <p>We do not use Google user data for advertising, surveillance, or any other purposes.</p>
+
+        <h2>3. Data Sharing</h2>
+        <p><strong>We do not share your Google user data with any third parties.</strong></p>
+        <p>All data processing (PDF conversion, image generation) occurs locally within your browser. The interaction with Google APIs (Drive/Slides) is a direct communication between your browser and Google servers. No data is sent to the developer's servers or any third-party analytics services.</p>
+
+        <h2>4. Data Storage & Protection</h2>
+        <p>This extension is designed to be "stateless" regarding sensitive user data.</p>
+        <ul>
+          <li><strong>No Remote Storage:</strong> We do not store your tokens, files, or slide content on any external servers.</li>
+          <li><strong>Local Storage:</strong> Non-sensitive settings (e.g., UI preferences) are stored locally in your browser using Chrome Storage API.</li>
+          <li><strong>Protection:</strong> All API communications use standard HTTPS encryption (OAuth 2.0) provided by Google.</li>
+        </ul>
+
+        <h2>5. Data Retention & Deletion</h2>
+        <p>Since we do not store your personal data on our servers, there is no data retention period.</p>
+        <ul>
+          <li><strong>Temporary Files:</strong> Image files created in Google Drive during the slide generation process are <strong>deleted immediately</strong> by the extension once the slide insertion is complete.</li>
+          <li><strong>Deletion Request:</strong> Users can stop all data access and remove all locally stored settings simply by uninstalling this extension from their Chrome browser. No further action is required to delete data as we do not hold any.</li>
+        </ul>
+
+        <h2>Contact Us</h2>
+        <p>If you have any questions about this Privacy Policy, please contact us via our GitHub repository.</p>
+        <p><a href="https://github.com/kotakahashi-4u/Enhancer4Google" target="_blank" class="github-link" style="display:inline-flex;">GitHub Repository</a></p>
       </div>
     </div>
 
-    <div class="card">
-      <h2>データの収集と使用について</h2>
-      
-      <h3>1. データの保存場所</h3>
-      <p>本拡張機能の設定（ON/OFF状態やパラメータ）は、すべてお客様のブラウザ内（Chrome Storage）に保存されます。これらが外部サーバーへ送信されることはありません。</p>
+    <div id="content-ja" class="lang-content">
+      <div class="card">
+        <h2>プライバシーポリシー</h2>
+        <p>最終更新日: 2026年1月2日</p>
+        <p>「Enhancer 4 Google」（以下、本拡張機能）は、ユーザーのプライバシーを最優先に考えて設計されています。本ポリシーでは、本拡張機能が Google API Services User Data Policy に準拠してどのようにデータを扱うかを説明します。</p>
+        
+        <div class="note">
+          <p><strong>要約:</strong> 本拡張機能は、ユーザーの個人情報、閲覧履歴、入力データを開発者のサーバーへ送信・収集することは一切ありません。すべての処理はユーザーのブラウザおよびGoogleの公式APIとの直接通信によって行われます。</p>
+        </div>
+      </div>
 
-      <h3>2. 外部通信とデータ送信</h3>
-      <p>本拡張機能は、以下の特定の機能を利用する場合にのみ、外部（Google API または指定されたウェブサイト）と通信を行います。</p>
-      
-      <ul>
-        <li><strong>Google Slides 連携機能:</strong> PDFデータをスライドに変換するため、<strong>Google Drive API</strong> および <strong>Google Slides API</strong> を使用します。PDFから変換された画像データは一時的にお客様自身のGoogleドライブにアップロードされ、スライドへの挿入完了後に即座に削除されます。このプロセスにおいて、データが開発者や第三者のサーバーへ送信されることはありません。</li>
-        <li><strong>Webクローラー機能:</strong> お客様が指定したURLの情報を取得するために、そのウェブサイトへアクセスします。取得したデータはブラウザ内でMarkdownファイルに変換され、ダウンロードされます。開発者のサーバーへ送信されることはありません。</li>
-      </ul>
-    </div>
+      <div class="card">
+        <h2>1. アクセスするデータ</h2>
+        <p>本拡張機能は、ユーザーが明示的に機能を利用した場合にのみ、以下のGoogleユーザーデータにアクセスします。</p>
+        <ul>
+          <li><strong>Googleドライブのファイル (drive.file):</strong> 本拡張機能自身が作成したファイル（PDFから変換された一時的な画像ファイルなど）にのみアクセスします。<strong>お客様が作成した既存のドキュメントや写真へのアクセス、読み取り、変更は一切行いません。</strong></li>
+          <li><strong>Googleスライド (presentations):</strong> ユーザーが開始したスライド作成プロセスにおいて、新しいスライドの作成および画像の挿入を行うためにアクセスします。</li>
+          <li><strong>ユーザー識別情報 (userinfo):</strong> Google Drive/Slides APIを操作する際のセッション認証（OAuth2）を行う目的でのみ使用します。</li>
+        </ul>
 
-    <div class="card">
-      <h2>権限の使用目的</h2>
-      <p>本拡張機能は、機能の実現に必要な最小限の権限のみを使用します。</p>
+        <h2>2. データの使用目的</h2>
+        <p>アクセスしたGoogleユーザーデータは、以下の特定の機能を提供するためだけに使用されます。</p>
+        <ul>
+          <li><strong>PDFのスライド変換機能:</strong> ユーザーが選択したPDFファイルをスライド化するために使用します。変換された画像を一時的にユーザーのGoogleドライブにアップロードし、Googleスライドに挿入した後、即座に削除します。</li>
+        </ul>
+        <p>ユーザーデータを広告、監視、またはその他の目的で使用することはありません。</p>
 
-      <ul>
-        <li><strong>identity:</strong> GoogleドライブおよびGoogleスライドを操作するためのOAuth2認証トークンを取得するために使用します。</li>
-        <li><strong>drive.file:</strong> スライド作成時に使用する一時画像ファイルを、Googleドライブへアップロード・削除するために使用します。<strong>本拡張機能が作成したファイルのみにアクセスし、お客様の既存のファイルには一切アクセスしません。</strong></li>
-        <li><strong>presentations:</strong> Googleスライドを新規作成し、編集するために使用します。</li>
-        <li><strong>storage:</strong> ユーザーの設定情報をブラウザ内に保存するために使用します。</li>
-        <li><strong>alarms:</strong> NotebookLMの同期スケジューラー（定期実行）機能のために使用します。</li>
-        <li><strong>host_permissions (&lt;all_urls&gt;):</strong> 「Webクローラー機能」において、ユーザーが指定した任意のウェブサイトの情報を取得・解析し、NotebookLM用のソースを作成するために必要です。この権限は、ユーザーが明示的にクローリングを実行したときのみ行使されます。</li>
-      </ul>
-    </div>
+        <h2>3. データの共有</h2>
+        <p><strong>本拡張機能が、Googleユーザーデータを第三者と共有することは一切ありません。</strong></p>
+        <p>すべてのデータ処理（PDF変換、画像生成）はユーザーのブラウザ内でローカルに行われます。Google APIとの通信は、ユーザーのブラウザとGoogleサーバー間で直接行われ、開発者のサーバーや第三者の分析サービスへデータが送信されることはありません。</p>
 
-    <div class="card">
-      <h2>Google API ユーザーデータの取り扱い</h2>
-      <p>本拡張機能は、Google APIから取得した情報の使用および他のアプリへの転送において、<a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank">Google API Services User Data Policy</a>（Limited Use requirementsを含む）を遵守します。</p>
-      <ul>
-        <li>本拡張機能は、スライド作成機能を実行する目的でのみGoogleユーザーデータ（Driveファイル、スライド）を使用します。</li>
-        <li>ユーザーデータが人間の目に触れることはなく、広告目的で使用されることもありません。</li>
-      </ul>
-    </div>
+        <h2>4. データの保存と保護</h2>
+        <p>本拡張機能は、機密性の高いユーザーデータを保持しない「ステートレス」な設計になっています。</p>
+        <ul>
+          <li><strong>外部保存なし:</strong> 認証トークン、ファイル、スライドの内容を外部サーバーに保存することはありません。</li>
+          <li><strong>ローカル保存:</strong> UI設定などの機密でない情報は、ブラウザ内の Chrome Storage API を使用してローカルに保存されます。</li>
+          <li><strong>通信の保護:</strong> Google APIとのすべての通信は、Googleが提供する標準のHTTPS暗号化（OAuth 2.0）によって保護されています。</li>
+        </ul>
 
-    <div class="card">
-      <h2>免責事項</h2>
-      <p>本拡張機能は「現状有姿」で提供されます。開発者は、本拡張機能の使用によって生じたいかなる損害（データの損失、業務の中断等を含む）についても、一切の責任を負いません。外部サイトのクローリングは、ユーザー自身の責任において行ってください。</p>
-    </div>
+        <h2>5. データの保持と削除</h2>
+        <p>個人データをサーバーに保存しないため、データの保持期間はありません。</p>
+        <ul>
+          <li><strong>一時ファイル:</strong> スライド生成プロセス中にGoogleドライブに作成された画像ファイルは、スライドへの挿入が完了した直後に、拡張機能によって<strong>自動的に削除</strong>されます。</li>
+          <li><strong>削除リクエスト:</strong> 拡張機能をブラウザからアンインストールするだけで、すべてのデータアクセス権限とローカル設定が削除されます。他に削除が必要なデータは存在しません。</li>
+        </ul>
 
-    <div class="card">
-      <h2>お問い合わせ</h2>
-      <p>本ポリシーに関するご質問や、不具合の報告は、GitHubリポジトリのIssueよりお願いいたします。</p>
-      <p><a href="https://github.com/kotakahashi-4u/Enhancer4Google" target="_blank">GitHub Repository</a></p>
+        <h2>お問い合わせ</h2>
+        <p>本ポリシーに関するご質問や、不具合の報告は、GitHubリポジトリのIssueよりお願いいたします。</p>
+        <p><a href="https://github.com/kotakahashi-4u/Enhancer4Google" target="_blank" class="github-link" style="display:inline-flex;">GitHub Repository</a></p>
+      </div>
     </div>
 
   </main>
@@ -237,13 +317,35 @@
   <footer class="footer">
     <div class="container">
       &copy; <span id="copyright-year"></span> Enhancer 4 Google
-      <br>
-      <a href="https://kotakahashi-4u.github.io/Enhancer4Google/privacy.html" style="color: inherit; text-decoration: none; font-size: 0.8rem;">Privacy Policy</a>
-      </div>
+    </div>
   </footer>
 
   <script>
-    // 現在の年を取得して表示
+    // 言語切り替えロジック
+    function switchLang(lang) {
+      // コンテンツの切り替え
+      document.getElementById('content-en').classList.remove('active');
+      document.getElementById('content-ja').classList.remove('active');
+      document.getElementById('content-' + lang).classList.add('active');
+
+      // ボタンの見た目切り替え
+      document.getElementById('btn-en').classList.remove('active');
+      document.getElementById('btn-ja').classList.remove('active');
+      document.getElementById('btn-' + lang).classList.add('active');
+
+      // HTMLのlang属性変更
+      document.documentElement.lang = lang;
+    }
+
+    // 初期化: ブラウザの言語設定を判定
+    const userLang = navigator.language || navigator.userLanguage;
+    if (userLang.startsWith('ja')) {
+      switchLang('ja');
+    } else {
+      switchLang('en');
+    }
+
+    // 年の自動更新
     document.getElementById('copyright-year').textContent = new Date().getFullYear();
   </script>
 
